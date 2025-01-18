@@ -13,7 +13,7 @@ CREATE TABLE movies (
 CREATE TABLE stars (
     id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    birthYear INT
+    birthYear INT DEFAULT ''
 );
 
 CREATE TABLE stars_in_movies (
