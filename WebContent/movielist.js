@@ -11,7 +11,6 @@ function handleMovieListResult(resultData) {
 
     // Iterate through resultData, no more than 20 entries
     for (let i = 0; i < Math.min(20, resultData.length); i++) {
-
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<tr>";
@@ -19,12 +18,12 @@ function handleMovieListResult(resultData) {
             "<th>" +
             // Add a link to single-movie.html with id passed with GET url parameter
             '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
-            + resultData[i]["movie_title"] +     // display star_name for the link text
+            + resultData[i]["movie_title"] +     // display movie_title for the link text
             '</a>' +
             "</th>";
         rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_genre"] + "</th>";
+        rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_stars"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
 

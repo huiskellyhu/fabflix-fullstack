@@ -1,5 +1,6 @@
 DROP DATABASE IF EXISTS moviedb;
 CREATE DATABASE IF NOT EXISTS moviedb;
+ALTER DATABASE moviedb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE moviedb;
 
@@ -13,7 +14,7 @@ CREATE TABLE movies (
 CREATE TABLE stars (
     id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    birthYear INT DEFAULT ''
+    birthYear INT
 );
 
 CREATE TABLE stars_in_movies (
