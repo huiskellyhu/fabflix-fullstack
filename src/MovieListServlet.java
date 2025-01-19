@@ -29,7 +29,7 @@ public class MovieListServlet extends HttpServlet {
 
     public void init(ServletConfig config) {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb?useUnicode=true&characterEncoding=UTF-8");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class MovieListServlet extends HttpServlet {
 
                             "SELECT t20.id, t20.title, t20.year, t20.director, " +
                             "GROUP_CONCAT(DISTINCT g.name) AS genres, " +
-                            "GROUP_CONCAT(DISTINCT s.name ORDER BY sim.starId) AS stars, " +
+                            "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY sim.starId) AS stars, " +
                             "t20.rating " +
                             "FROM top_20_movies AS t20 " +
                             "LEFT JOIN genres_in_movies AS gim ON gim.movieId = t20.id " +
