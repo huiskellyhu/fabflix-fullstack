@@ -3,6 +3,8 @@
 
 ### Eclipse ###
 .idea
+db/movie-data.sql
+
 .metadata
 bin/
 tmp/
