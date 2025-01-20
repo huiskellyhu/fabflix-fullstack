@@ -46,8 +46,10 @@ function handleMovieResult(resultData) {
     let movieInfoElement = jQuery("#movie_info");
 
     // append two html <p> created to the h3 body, which will refresh the page
-    movieInfoElement.append("<h3>" + resultData[0]["movie_title"] + "</h3>" +
-        "<p>(" + (resultData[0]["movie_year"] || "N/A") + ")</p>");
+    movieInfoElement.append("<h3 class='year-line'>" + resultData[0]["movie_title"] + "</h3>" +
+        "<p class='year'>(" + (resultData[0]["movie_year"] || "N/A") + ")</p>");
+
+    document.title = resultData[0]["movie_title"];
 
     // Populate the movie table
     // Find the empty table body by id "movie_info_table"

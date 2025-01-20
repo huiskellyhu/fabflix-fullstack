@@ -1,0 +1,29 @@
+
+/*MOVIELIST STYLING*/
+
+.navbar-color {
+    background-color: #ffd1dc;
+}
+
+.table-color th {
+    background-color: #ffd1dc;
+    color: black;
+}
+
+.table-color th:first-child {
+    border-top-left-radius: 8px;
+}
+.table-color th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/*SINGLE MOVIE AND SINGLE STAR STYLING*/
+h3, .year-line {
+    display: inline;
+}
+.year {
+    font-size: 0.8em;
+    font-style: italic;
+    margin-left: 10px;
+    display: inline;
+}
