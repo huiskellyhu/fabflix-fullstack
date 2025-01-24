@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
+    <!--          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Login to Fablix</title>
+</head>
+<body>
+<!-- note that this navbar code is referenced from my own personal project, referenced from bootstrap -->
+    <nav class="navbar navbar-expand-lg navbar-light navbar-color">
+        <div class="container">
+            <a class="navbar-brand" >Fabflix</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="mb-2">Login to Fablix</h2>
+        <!-- Set the method to POST to avoid showing the username/password in the URL
+             The default action is disabled to allow your own implementation. -->
+        <form id="login_form" method="post" action="#">
+            <label><b>Username</b></label>
+            <label>
+                <input name="username" placeholder="Enter Username" type="text">
+            </label>
+            <br>
+            <label><b>Password</b></label>
+            <label>
+                <input name="password" placeholder="Enter Password" type="password">
+            </label>
+            <br>
+            <input type="submit" value="Login">
+        </form>
+
+        <div id="login_error_message"></div>
+    </div>
+
+<!-- Load jQuery and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="./login.js"></script>
+</body>
+</html>
