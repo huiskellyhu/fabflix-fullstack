@@ -17,8 +17,6 @@ import java.sql.Statement;
 
 
 
-
-
 @WebServlet(name = "MovieListServlet", urlPatterns = "/api/movielist")
 public class MovieListServlet extends HttpServlet {
     // Create a dataSource which registered in web.xml

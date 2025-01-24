@@ -18,7 +18,7 @@
 }
 
 /*SINGLE MOVIE AND SINGLE STAR STYLING*/
-h3, .year-line {
+.movie-info, .star-info, .year-line {
     display: inline;
 }
 .year {
