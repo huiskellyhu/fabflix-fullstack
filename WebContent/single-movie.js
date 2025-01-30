@@ -24,16 +24,26 @@ function getParameterByName(target) {
  * @param resultData jsonObject
  */
 
-function limitBy(stringdata, num) {
-    let stringarray = stringdata.split(",");
-    stringarray = stringarray.slice(0, num);
-    return stringarray.join(", ");
+function getGenresIdandName(genresdata) {
+    let genres = genresdata.split(",");
+    let genres_limited = [];
+
+    // NO LIMIT ON GENRES
+    for(let i=0; i< genres.length; i++) {
+        let [id, name] = genres[i].split(":");
+        genres_limited.push('<a href="results.html?genre=' + id + '">' + name + '</a>');
+    }
+    return genres_limited.join(", ");
+    // let stringarray = stringdata.split(",");
+    // stringarray = stringarray.slice(0, num);
+    // return stringarray.join(", ");
 }
 
 function getStarsIdandName (starsdata) {
     let stars = starsdata.split(",");
     let stars_limited = [];
 
+    // NO LIMIT ON STARS
     for(let i=0; i< stars.length; i++) {
         let [id, name] = stars[i].split(":");
         stars_limited.push('<a href="single-star.html?id=' + id + '">' + name + '</a>');
@@ -61,9 +71,7 @@ function handleMovieResult(resultData) {
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
-        // let genres_limited = limitBy(resultData[i]["movie_genres"], 3);
-        // rowHTML += "<th>" + genres_limited + "</th>";
+        rowHTML += "<th>" + getGenresIdandName(resultData[i]["movie_genres"]) + "</th>";
 
         // -- MOVIE STARS HYPERLINKS -- (format= id:starname, id:starname,...)
         // rowHTML += "<th>" + resultData[i]["movie_stars"] + "</th>";

@@ -56,8 +56,8 @@ public class SingleMovieServlet extends HttpServlet {
 //            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m " +
 //                    "where m.id = sim.movieId and sim.starId = s.id and s.id = ?";
             String query = "SELECT m.id, m.title, m.year, m.director, " +
-                    "GROUP_CONCAT(DISTINCT g.name) AS genres, " +
-                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY sim.starId) AS stars, " +
+                    "GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name) AS genres, " +
+                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY (SELECT COUNT(*) FROM stars_in_movies as sim2 WHERE sim2.starId = s.id) DESC, s.name ASC) AS stars, " +
                     "r.rating " +
                     "FROM movies AS m " +
                     "LEFT JOIN ratings AS r ON r.movieId = m.id " +
