@@ -1,3 +1,31 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const updateBtn = jQuery("#updateBtn");
+    const item_limit = jQuery("#item_limit");
+    const sorting_menu = jQuery("#sorting_menu");
+
+    // TO SET CURRENT VALUES OF THE DROPDOWN MENUS
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const sortValue = urlParams.get("sort") || "title_asc_rating_asc";
+    const limit = urlParams.get("limit") || "25";
+
+    sorting_menu.val(sortValue);
+    item_limit.val(limit);
+
+
+    // TO UPDATE VALUES OF THE DROPDOWN MENUS AND REFRESH
+    updateBtn.on("click", function() {
+        const sortValue = sorting_menu.val();
+        const limit = item_limit.val();
+
+        urlParams.set("sort", sortValue);
+        urlParams.set("limit", limit);
+        window.location.search = urlParams.toString();
+        console.log("URL params:", window.location.search);
+    })
+})
+
+
 /**
  * Retrieve parameter from request URL, matching by parameter name
  * @param target String
@@ -45,13 +73,14 @@ function getStarsIdandName (starsdata) {
 }
 function handleMovieListResult(resultData) {
     console.log("handleMovieListResult: populating movielist table from resultData");
-
+    console.log("latest 12:37")
+    console.log("URL params:", window.location.search);
     // Populate the movielist table
     // Find the empty table body by id "movie_list_body"
     let movie_list_BodyElement = jQuery("#movie_list_body");
 
-    // Iterate through resultData, no more than 20 entries
-    for (let i = 0; i < Math.min(20, resultData.length); i++) {
+    // Iterate through resultData
+    for (let i = 0; i < resultData.length; i++) {
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<tr>";
@@ -91,6 +120,8 @@ let title = getParameterByName('title');
 let year = getParameterByName('year');
 let director = getParameterByName('director');
 let star = getParameterByName('star');
+let sort = getParameterByName('sort');
+let limit = getParameterByName('limit');
 
 if (genreId) {
     apiURL = "api/results?genre=" + genreId;
@@ -104,6 +135,12 @@ else {
     apiURL += "&year=" + year;
     apiURL += "&director=" + director;
     apiURL += "&star=" + star;
+}
+if (sort) {
+    apiURL += "&sort=" + sort;
+}
+if (limit) {
+    apiURL += "&limit=" + limit;
 }
 
 // Makes the HTTP GET request and registers on success callback function handleResult

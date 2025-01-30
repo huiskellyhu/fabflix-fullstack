@@ -44,8 +44,35 @@
 </nav>
 
 <div class="container mt-5">
-    <h1 class="mb-2">Results</h1>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h1 class="mb-2">Results</h1>
 
+        <div class="d-flex align-items-center" style="font-size: 0.85rem;">
+            <!-- DROPDOWN FOR LIMITS -->
+            <label for="item_limit" class="me-2" style="white-space: nowrap;"> Movies Per Page: </label>
+            <select id="item_limit" class="form-select form-select-sm me-3" style="width: auto;">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <!-- DROPDOWN FOR SORTING -->
+            <label for="sorting_menu" class="me-2" style="white-space: nowrap;"> Sort By: </label>
+            <select id="sorting_menu" class="form-select form-select-sm me-3" style="width: auto;">
+                <option value="title_asc_rating_asc">Title ↑, Rating ↑</option>
+                <option value="title_asc_rating_desc">Title ↑, Rating ↓</option>
+                <option value="title_desc_rating_asc">Title ↓, Rating ↑</option>
+                <option value="title_desc_rating_desc">Title ↓, Rating ↓</option>
+                <option value="rating_asc_title_asc">Rating ↑, Title ↑</option>
+                <option value="rating_asc_title_desc">Rating ↑, Title ↓</option>
+                <option value="rating_desc_title_asc">Rating ↓, Title ↑</option>
+                <option value="rating_desc_title_desc">Rating ↓, Title ↓</option>
+            </select>
+            <!-- UPDATE BUTTON -->
+            <button id="updateBtn" class="btn btn-primary">Update</button>
+
+        </div>
+    </div>
     <table id=movie_list_table class="table table-striped">
         <!-- Create a table header -->
         <thead class="table-color">

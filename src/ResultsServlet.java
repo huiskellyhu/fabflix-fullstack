@@ -46,6 +46,8 @@ public class ResultsServlet extends HttpServlet {
         String year = request.getParameter("year");
         String director = request.getParameter("director");
         String star = request.getParameter("star");
+        String sort = request.getParameter("sort");
+        String limit = request.getParameter("limit");
 
         // The log message can be found in localhost log
         request.getServletContext().log("getting genreId: " + genreId);
@@ -54,6 +56,11 @@ public class ResultsServlet extends HttpServlet {
         request.getServletContext().log("getting year: " + year);
         request.getServletContext().log("getting director: " + director);
         request.getServletContext().log("getting star: " + star);
+        request.getServletContext().log("getting sort: " + sort);
+        request.getServletContext().log("getting limit: " + limit);
+
+        System.out.println("Received Sort: " + sort);
+        System.out.println("Received Limit: " + limit);
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
@@ -106,12 +113,33 @@ public class ResultsServlet extends HttpServlet {
                              "JOIN stars as s ON sim.starId = s.id WHERE sim.starId = s.id AND s.name LIKE ?) ";
                 }
             }
-            query += "GROUP BY m.id " +
-                    "ORDER BY m.title ASC " +
-                    "LIMIT 20;";
-            // Construct a query with parameter represented by "?"
-//            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m " +
-//                    "where m.id = sim.movieId and sim.starId = s.id and s.id = ?";
+
+
+            query += "GROUP BY m.id ";
+
+            if(sort == null || sort.equals("title_asc_rating_asc")) {
+                query += "ORDER BY m.title ASC, COALESCE(r.rating, 0) ASC ";
+            } else if (sort.equals("title_asc_rating_desc")) {
+                query += "ORDER BY m.title ASC, COALESCE(r.rating, 0) DESC ";
+            } else if (sort.equals("title_desc_rating_asc")) {
+                query += "ORDER BY m.title DESC, COALESCE(r.rating, 0) ASC ";
+            } else if (sort.equals("title_desc_rating_desc")) {
+                query += "ORDER BY m.title DESC, COALESCE(r.rating, 0) DESC ";
+            } else if (sort.equals("rating_asc_title_asc")) {
+                query += "ORDER BY COALESCE(r.rating, 0) ASC, m.title ASC ";
+            } else if (sort.equals("rating_asc_title_desc")) {
+                query += "ORDER BY COALESCE(r.rating, 0) ASC, m.title DESC ";
+            } else if (sort.equals("rating_desc_title_asc")) {
+                query += "ORDER BY COALESCE(r.rating, 0) DESC, m.title ASC ";
+            } else if (sort.equals("rating_desc_title_desc")) {
+                query += "ORDER BY COALESCE(r.rating, 0) DESC, m.title DESC ";
+            }
+
+            if(limit == null) {
+                query += "LIMIT 25;";
+            } else {
+                query += "LIMIT " + limit + ";";
+            }
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
