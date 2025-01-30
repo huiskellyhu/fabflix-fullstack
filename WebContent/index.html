@@ -32,6 +32,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="movielist.html">Top 20</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="results.html" >Results</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -39,89 +42,91 @@
 
     <div class="container text-center mt-5">
         <h2>Welcome to Fabflix!</h2>
-<!--        <p id="sessionID"></p>-->
-<!--        <p id="lastAccessTime"></p>-->
-<!--        <form ACTION="#" id="cart" METHOD="post">-->
-<!--            <label>Item Purchased</label>-->
-<!--            <br>-->
-<!--            <label>-->
-<!--                <input name="item" required="required" type="text">-->
-<!--            </label>-->
-<!--            <input type="submit" VALUE="add">-->
-<!--        </form>-->
-<!--        <div id="item_list"></div>-->
+
+        <!-- SEARCH BAR -->
         <div class="search-bar">
             <h3 class="mb-2">Search for...</h3>
-            <form id="search-form">
+            <form id="search-form" action="results.html" method="GET">
                 <div class="row justify-content-center align-items-end">
                     <div class="col-md-2 col-sm-3">
-                        <input type="text" class="form-control" id="title" placeholder="Title">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Title">
                         <label for="title"></label>
                     </div>
                     <div class="col-md-2 col-sm-3">
-                        <input type="text" class="form-control" id="year" placeholder="Year">
+                        <input type="number" class="form-control" id="year" name="year" placeholder="Year">
                         <label for="year"></label>
                     </div>
                     <div class="col-md-2 col-sm-3">
-                        <input type="text" class="form-control" id="director" placeholder="Director">
+                        <input type="text" class="form-control" id="director" name="director" placeholder="Director">
                         <label for="director"></label>
                     </div>
                     <div class="col-md-2 col-sm-3">
-                        <input type="text" class="form-control" id="star" placeholder="Star">
+                        <input type="text" class="form-control" id="star" name="star" placeholder="Star">
                         <label for="star"></label>
                     </div>
+                    <div class="col-md-2 col-sm-3">
+                        <button type="submit" class="btn btn-primary mb-4">Search</button>
+                    </div>
+
                 </div>
-                <button type="submit" class="btn btn-primary mb-4">Search</button>
             </form>
         </div>
 
+
+        <!-- BROWSE BY GENRE-->
         <div class="browse-section">
             <h3>Browse by Genres</h3>
-            <div class="row">
-                <div class="col-md-3"><a href="results.html?genre=1">Action</a></div>
-                <div class="col-md-3"><a href="results.html?genre=2">Adult</a></div>
-                <div class="col-md-3"><a href="results.html?genre=3">Adventure</a></div>
-                <div class="col-md-3"><a href="results.html?genre=4">Animation</a></div>
+
+            <div class="row" id="browse-genres">
+                <!-- put genres here -->
             </div>
-            <div class="row">
-                <div class="col-md-3"><a href="results.html?genre=5">Biography</a></div>
-                <div class="col-md-3"><a href="results.html?genre=6">Comedy</a></div>
-                <div class="col-md-3"><a href="results.html?genre=7">Crime</a></div>
-                <div class="col-md-3"><a href="results.html?genre=8">Documentary</a></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"><a href="results.html?genre=9">Drama</a></div>
-                <div class="col-md-3"><a href="results.html?genre=10">Family</a></div>
-                <div class="col-md-3"><a href="results.html?genre=11">Fantasy</a></div>
-                <div class="col-md-3"><a href="results.html?genre=12">History</a></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"><a href="results.html?genre=13">Horror</a></div>
-                <div class="col-md-3"><a href="results.html?genre=14">Music</a></div>
-                <div class="col-md-3"><a href="results.html?genre=15">Musical</a></div>
-                <div class="col-md-3"><a href="results.html?genre=16">Mystery</a></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"><a href="results.html?genre=17">Reality-TV</a></div>
-                <div class="col-md-3"><a href="results.html?genre=18">Romance</a></div>
-                <div class="col-md-3"><a href="results.html?genre=19">Sci-Fi</a></div>
-                <div class="col-md-3"><a href="results.html?genre=20">Sport</a></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"><a href="results.html?genre=21">Thriller</a></div>
-                <div class="col-md-3"><a href="results.html?genre=22">War</a></div>
-                <div class="col-md-3"><a href="results.html?genre=23">Western</a></div>
-            </div>
+<!--            <div class="row">-->
+<!--                <div class="col-md-3"><a href="results.html?genre=1">Action</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=2">Adult</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=3">Adventure</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=4">Animation</a></div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-3"><a href="results.html?genre=5">Biography</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=6">Comedy</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=7">Crime</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=8">Documentary</a></div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-3"><a href="results.html?genre=9">Drama</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=10">Family</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=11">Fantasy</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=12">History</a></div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-3"><a href="results.html?genre=13">Horror</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=14">Music</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=15">Musical</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=16">Mystery</a></div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-3"><a href="results.html?genre=17">Reality-TV</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=18">Romance</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=19">Sci-Fi</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=20">Sport</a></div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-3"><a href="results.html?genre=21">Thriller</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=22">War</a></div>-->
+<!--                <div class="col-md-3"><a href="results.html?genre=23">Western</a></div>-->
+<!--            </div>-->
         </div>
 
+        <!-- BROWSE BY TITLE -->
         <div class="browse-section">
             <h3>Browse by Title</h3>
 
             <div class="row" id="browse-titles">
                 <!-- put titles here -->
             </div>
-            </div>
+        </div>
     </div>
+
     <!-- scripts -->
     <!-- Load jQuery and Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

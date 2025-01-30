@@ -42,10 +42,18 @@ public class ResultsServlet extends HttpServlet {
         // Retrieve parameter id from url request.
         String genreId = request.getParameter("genre");
         String prefixId = request.getParameter("prefix");
+        String title = request.getParameter("title");
+        String year = request.getParameter("year");
+        String director = request.getParameter("director");
+        String star = request.getParameter("star");
 
         // The log message can be found in localhost log
         request.getServletContext().log("getting genreId: " + genreId);
-        request.getServletContext().log("getting prefixId: " + genreId);
+        request.getServletContext().log("getting prefixId: " + prefixId);
+        request.getServletContext().log("getting title: " + title);
+        request.getServletContext().log("getting year: " + year);
+        request.getServletContext().log("getting director: " + director);
+        request.getServletContext().log("getting star: " + star);
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
@@ -55,8 +63,8 @@ public class ResultsServlet extends HttpServlet {
             // Get a connection from dataSource
 
             String query = "SELECT m.id, m.title, m.year, m.director, " +
-                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genres, " +
-                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY sim.starId) AS stars, " +
+                    "GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name) AS genres, " +
+                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY (SELECT COUNT(*) FROM stars_in_movies as sim2 WHERE sim2.starId = s.id) DESC) AS stars, " +
                     "r.rating " +
                     "FROM movies AS m " +
                     "LEFT JOIN ratings AS r ON r.movieId = m.id " +
@@ -71,9 +79,32 @@ public class ResultsServlet extends HttpServlet {
                         "    FROM genres_in_movies " +
                         "    WHERE genreId = ?) ";
 
-            } else {
+            } else if (prefixId != null) {
                 // PREFIX QUERY
+                if (prefixId.equals("*")) {
+                    // non-alphanumeric chars
+                    query += "WHERE m.title REGEXP '[^a-zA-Z0-9]' ";
+                }
+                else {
+                    query += "WHERE m.title LIKE ? ";
+                }
+            } else {
+                query += "WHERE 1=1 "; // to use AND
 
+                if (title != null && !title.isEmpty()) {
+                    query += "AND m.title LIKE ? ";
+                }
+                if (year != null && !year.isEmpty()) {
+                    query += "AND m.year = ? ";
+                }
+                if (director != null && !director.isEmpty()) {
+                    query += "AND m.director LIKE ? ";
+                }
+                if (star != null && !star.isEmpty()) {
+                    query += "AND m.id IN ( " +
+                             "SELECT sim.movieId FROM stars_in_movies as sim " +
+                             "JOIN stars as s ON sim.starId = s.id WHERE sim.starId = s.id AND s.name LIKE ?) ";
+                }
             }
             query += "GROUP BY m.id " +
                     "ORDER BY m.title ASC " +
@@ -87,8 +118,24 @@ public class ResultsServlet extends HttpServlet {
 
             if (genreId != null) {
                 statement.setString(1, genreId);
+            } else if (prefixId != null) {
+                if (!prefixId.equals("*")) {
+                    statement.setString(1, prefixId + "%");
+                }
             } else {
-
+                int paramIndex = 1;
+                if (title != null && !title.isEmpty()) {
+                    statement.setString(paramIndex++, "%" + title + "%");
+                }
+                if (year != null && !year.isEmpty()) {
+                    statement.setInt(paramIndex++, Integer.parseInt(year));
+                }
+                if (director != null && !director.isEmpty()) {
+                    statement.setString(paramIndex++, "%" + director + "%");
+                }
+                if (star != null && !star.isEmpty()) {
+                    statement.setString(paramIndex++, "%" + star + "%");
+                }
             }
 
             // Perform the query

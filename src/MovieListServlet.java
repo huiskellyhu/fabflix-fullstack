@@ -76,8 +76,8 @@ public class MovieListServlet extends HttpServlet {
                             "LIMIT 20 )" +
 
                             "SELECT t20.id, t20.title, t20.year, t20.director, " +
-                            "GROUP_CONCAT(DISTINCT g.name) AS genres, " +
-                            "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY sim.starId) AS stars, " +
+                            "GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name) AS genres, " +
+                            "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY (SELECT COUNT(*) FROM stars_in_movies as sim2 WHERE sim2.starId = s.id) DESC) AS stars, " +
                             "t20.rating " +
                             "FROM top_20_movies AS t20 " +
                             "LEFT JOIN genres_in_movies AS gim ON gim.movieId = t20.id " +

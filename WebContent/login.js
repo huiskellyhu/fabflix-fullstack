@@ -1,3 +1,7 @@
+// LOGIN HERE
+// USES api/login from LoginServlet
+
+
 let login_form = $("#login_form");
 
 /**

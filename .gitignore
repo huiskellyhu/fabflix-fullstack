@@ -4,6 +4,7 @@
 ### Eclipse ###
 .idea
 db/movie-data.sql
+.iml
 
 .metadata
 bin/

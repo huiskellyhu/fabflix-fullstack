@@ -19,10 +19,18 @@ function getParameterByName(target) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-function limitBy(stringdata, num) {
-    let stringarray = stringdata.split(",");
-    stringarray = stringarray.slice(0, num);
-    return stringarray.join(", ");
+function getGenresIdandName(genresdata) {
+    let genres = genresdata.split(",");
+    let genres_limited = [];
+
+    for(let i=0; i< Math.min(3, genres.length); i++) {
+        let [id, name] = genres[i].split(":");
+        genres_limited.push('<a href="results.html?genre=' + id + '">' + name + '</a>');
+    }
+    return genres_limited.join(", ");
+    // let stringarray = stringdata.split(",");
+    // stringarray = stringarray.slice(0, num);
+    // return stringarray.join(", ");
 }
 
 function getStarsIdandName (starsdata) {
@@ -60,8 +68,7 @@ function handleMovieListResult(resultData) {
         rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
         // rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
-        let genres_limited = limitBy(resultData[i]["movie_genres"], 3);
-        rowHTML += "<th>" + genres_limited + "</th>";
+        rowHTML += "<th>" + getGenresIdandName(resultData[i]["movie_genres"]) + "</th>";
 
         // -- MOVIE STARS HYPERLINKS -- (format= id:starname, id:starname,...)
         // rowHTML += "<th>" + resultData[i]["movie_stars"] + "</th>";
@@ -80,12 +87,23 @@ function handleMovieListResult(resultData) {
 // Get id from URL
 let genreId = getParameterByName('genre');
 let prefixId = getParameterByName('prefix');
+let title = getParameterByName('title');
+let year = getParameterByName('year');
+let director = getParameterByName('director');
+let star = getParameterByName('star');
 
 if (genreId) {
     apiURL = "api/results?genre=" + genreId;
 }
-else {
+else if (prefixId) {
     apiURL = "api/results?prefix=" + prefixId;
+}
+else {
+    apiURL = "api/results?";
+    apiURL += "title=" + title;
+    apiURL += "&year=" + year;
+    apiURL += "&director=" + director;
+    apiURL += "&star=" + star;
 }
 
 // Makes the HTTP GET request and registers on success callback function handleResult
