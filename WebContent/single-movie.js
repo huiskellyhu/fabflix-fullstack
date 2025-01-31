@@ -1,3 +1,18 @@
+document.addEventListener("DOMContentLoaded", function () {
+    // FOR RETURNING TO RESULTS
+    console.log("setting resultspage href");
+    let target_params = sessionStorage.getItem("resultsParams");
+    if (target_params.includes("&returning=1")) {
+        document.getElementById("resultspage").href = "results.html?" + target_params;
+    } else if (target_params.includes("&returning=0")){
+        let modified_params = target_params.replace("&returning=0", "&returning=1");
+        document.getElementById("resultspage").href = "results.html?" + modified_params;
+    } else {
+        document.getElementById("resultspage").href = "results.html?" + target_params + "&returning=1";
+    }
+})
+
+
 /**
  * Retrieve parameter from request URL, matching by parameter name
  * @param target String

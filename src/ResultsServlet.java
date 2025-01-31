@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,8 +37,10 @@ public class ResultsServlet extends HttpServlet {
      * response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
 
         response.setContentType("application/json"); // Response mime type
+
 
         // Retrieve parameter id from url request.
         String genreId = request.getParameter("genre");
@@ -48,6 +51,10 @@ public class ResultsServlet extends HttpServlet {
         String star = request.getParameter("star");
         String sort = request.getParameter("sort");
         String limit = request.getParameter("limit");
+        String page = request.getParameter("page");
+        String returning = request.getParameter("returning");
+
+
 
         // The log message can be found in localhost log
         request.getServletContext().log("getting genreId: " + genreId);
@@ -58,27 +65,52 @@ public class ResultsServlet extends HttpServlet {
         request.getServletContext().log("getting star: " + star);
         request.getServletContext().log("getting sort: " + sort);
         request.getServletContext().log("getting limit: " + limit);
+        request.getServletContext().log("getting page: " + page);
+        request.getServletContext().log("getting returning: " + returning);
 
         System.out.println("Received Sort: " + sort);
         System.out.println("Received Limit: " + limit);
+        System.out.println("Received Page: " + page);
+        System.out.println("Received returning: " + returning);
+
+        // setting default values
+        if (sort == null){
+            sort = "title_asc_rating_asc";
+        }
+        if (limit == null){
+            limit = "25";
+        }
+
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
+        if(returning != null && returning.equals("1")){
+            // already convert to string
+            String jsonArray = session.getAttribute("results").toString();
+
+            // Write JSON string to output
+            out.write(jsonArray);
+            // Set response status to 200 (OK)
+            response.setStatus(200);
+            System.out.println("got result from cache");
+            return;
+        }
+
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
-
             String query = "SELECT m.id, m.title, m.year, m.director, " +
                     "GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name) AS genres, " +
                     "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY (SELECT COUNT(*) FROM stars_in_movies as sim2 WHERE sim2.starId = s.id) DESC, s.name ASC) AS stars, " +
-                    "r.rating " +
+                    "r.rating, " +
+                    "COUNT(*) OVER() AS total_results " +
                     "FROM movies AS m " +
                     "LEFT JOIN ratings AS r ON r.movieId = m.id " +
-                    "LEFT JOIN genres_in_movies AS gim ON gim.movieId = m.id " +
-                    "LEFT JOIN genres AS g ON g.id = gim.genreId " +
-                    "LEFT JOIN stars_in_movies AS sim ON sim.movieId = m.id " +
-                    "LEFT JOIN stars AS s ON s.id = sim.starId ";
+                    "INNER JOIN genres_in_movies AS gim ON gim.movieId = m.id " +
+                    "INNER JOIN genres AS g ON g.id = gim.genreId " +
+                    "INNER JOIN stars_in_movies AS sim ON sim.movieId = m.id " +
+                    "INNER JOIN stars AS s ON s.id = sim.starId ";
             if (genreId != null) {
                 // GENRE QUERY
                 query += "WHERE m.id IN (" +
@@ -136,10 +168,21 @@ public class ResultsServlet extends HttpServlet {
             }
 
             if(limit == null) {
-                query += "LIMIT 25;";
+                query += "LIMIT 25 ";
             } else {
-                query += "LIMIT " + limit + ";";
+                query += "LIMIT " + limit + " ";
             }
+
+            // pagination
+            if(page == null) {
+                query += "OFFSET 0;";
+            } else {
+                int limit_num = Integer.parseInt(limit);
+                int offset_num = Integer.parseInt(page);
+                int total_offset = (offset_num-1) * limit_num;
+                query += "OFFSET " + total_offset + ";";
+            }
+
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -180,6 +223,7 @@ public class ResultsServlet extends HttpServlet {
                 String movie_genres = rs.getString("genres");
                 String movie_stars = rs.getString("stars");
                 String movie_rating = rs.getString("rating");
+                String total_results = rs.getString("total_results");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
@@ -190,12 +234,14 @@ public class ResultsServlet extends HttpServlet {
                 jsonObject.addProperty("movie_genres", movie_genres);
                 jsonObject.addProperty("movie_stars", movie_stars);
                 jsonObject.addProperty("movie_rating", movie_rating);
-
+                jsonObject.addProperty("total_results", total_results);
 
                 jsonArray.add(jsonObject);
             }
             rs.close();
             statement.close();
+            // save JSON to session (convert back to string later)
+            session.setAttribute("results", jsonArray);
 
             // Write JSON string to output
             out.write(jsonArray.toString());

@@ -1,10 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // PREVIOUS AND NEXT PAGE FUNCTIONALITY
+    const prevBtn = jQuery("#prevpage");
+    const currpage = jQuery("#currpage");
+    const nextBtn = jQuery("#nextpage");
+
+    // getting current page number from url
+    const urlParams = new URLSearchParams(window.location.search);
+    let currpage_num = parseInt(urlParams.get("page")) || 1;
+    currpage.text(`${currpage_num}`);
+
+    prevBtn.prop("disabled", currpage_num == 1); // disable prev if first page
+
+    // update page for prevBtn
+    prevBtn.on("click", function() {
+        if (currpage_num > 1) {
+            urlParams.set("page", (currpage_num - 1).toString());
+            urlParams.set("returning", "0");
+            window.location.search = urlParams.toString();
+        }
+    });
+    // update page for nextBtn
+    nextBtn.on("click", function() {
+        // SET CONDITION FOR DISABLING nextBtn IN handleMovieListResult
+        urlParams.set("page", (currpage_num + 1).toString());
+        urlParams.set("returning", "0");
+        window.location.search = urlParams.toString();
+
+    });
+
+
+    // DROPDOWN SORTING MENUS FUNCTIONALITY
     const updateBtn = jQuery("#updateBtn");
     const item_limit = jQuery("#item_limit");
     const sorting_menu = jQuery("#sorting_menu");
 
     // TO SET CURRENT VALUES OF THE DROPDOWN MENUS
-    const urlParams = new URLSearchParams(window.location.search);
+    //const urlParams = new URLSearchParams(window.location.search);
 
     const sortValue = urlParams.get("sort") || "title_asc_rating_asc";
     const limit = urlParams.get("limit") || "25";
@@ -20,9 +51,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         urlParams.set("sort", sortValue);
         urlParams.set("limit", limit);
+        urlParams.set("page", "1"); // reset page if changing sorting
+        urlParams.set("returning", "0");
         window.location.search = urlParams.toString();
         console.log("URL params:", window.location.search);
     })
+
+
+    sessionStorage.setItem("resultsParams", urlParams.toString());
+    console.log("saved resultsparams", sessionStorage.getItem("resultsParams"));
 })
 
 
@@ -73,8 +110,15 @@ function getStarsIdandName (starsdata) {
 }
 function handleMovieListResult(resultData) {
     console.log("handleMovieListResult: populating movielist table from resultData");
-    console.log("latest 12:37")
+    console.log("latest 10:12")
     console.log("URL params:", window.location.search);
+
+    // disabling nextBtn depending on total_results
+    const total_results = resultData[0]['total_results'] || 0;
+    $("#nextpage").prop("disabled", page >= Math.ceil(total_results / limit));
+    console.log("total_results: ", total_results);
+
+
     // Populate the movielist table
     // Find the empty table body by id "movie_list_body"
     let movie_list_BodyElement = jQuery("#movie_list_body");
@@ -121,7 +165,9 @@ let year = getParameterByName('year');
 let director = getParameterByName('director');
 let star = getParameterByName('star');
 let sort = getParameterByName('sort');
-let limit = getParameterByName('limit');
+let limit = getParameterByName('limit') || 25;
+let page = getParameterByName('page') || 1;
+let returning = getParameterByName('returning') || 0;
 
 if (genreId) {
     apiURL = "api/results?genre=" + genreId;
@@ -142,7 +188,12 @@ if (sort) {
 if (limit) {
     apiURL += "&limit=" + limit;
 }
-
+if (page) {
+    apiURL += "&page=" + page;
+}
+if (returning) {
+    apiURL += "&returning=" + returning;
+}
 // Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({
     dataType: "json",  // Setting return data type

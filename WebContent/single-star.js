@@ -1,13 +1,16 @@
-/**
- * This example is following frontend and backend separation.
- *
- * Before this .js is loaded, the html skeleton is created.
- *
- * This .js performs three steps:
- *      1. Get parameter from request URL so it know which id to look for
- *      2. Use jQuery to talk to backend API to get the json data.
- *      3. Populate the data to correct html elements.
- */
+document.addEventListener("DOMContentLoaded", function () {
+    // FOR RETURNING TO RESULTS
+    console.log("setting resultspage href");
+    let target_params = sessionStorage.getItem("resultsParams");
+    if (target_params.includes("&returning=1")) {
+        document.getElementById("resultspage").href = "results.html?" + target_params;
+    } else if (target_params.includes("&returning=0")){
+        let modified_params = target_params.replace("&returning=0", "&returning=1");
+        document.getElementById("resultspage").href = "results.html?" + modified_params;
+    } else {
+        document.getElementById("resultspage").href = "results.html?" + target_params + "&returning=1";
+    }
+})
 
 
 /**
