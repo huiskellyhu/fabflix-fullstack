@@ -42,7 +42,10 @@ public class AddToCartServlet extends HttpServlet {
         Integer customer_id = current_user.getId();
 
         String movie_id = request.getParameter("movie_id");
+        String movie_quantity = request.getParameter("movie_quantity");
 
+        System.out.println("Received movie_id: " + movie_id);
+        System.out.println("Received movie_quantity: " + movie_quantity);
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
@@ -62,7 +65,12 @@ public class AddToCartServlet extends HttpServlet {
                 String update_query = "UPDATE cart_items SET quantity = ? WHERE id = ?";
                 PreparedStatement update_statement = conn.prepareStatement(update_query);
 
-                update_statement.setInt(1, rs.getInt("quantity") + 1);
+                if (movie_quantity != null) {
+                    update_statement.setInt(1, Integer.parseInt(movie_quantity));
+                } else {
+                    update_statement.setInt(1, rs.getInt("quantity")+1);
+                }
+
                 update_statement.setInt(2, rs.getInt("id"));
                 update_statement.executeUpdate();
                 update_statement.close();
@@ -97,4 +105,44 @@ public class AddToCartServlet extends HttpServlet {
 
 
     }
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // for deleting an entry in cart_items (make sure to update total price too)
+        HttpSession session = request.getSession();
+        User current_user = (User) session.getAttribute("user");
+        int customer_id = current_user.getId();
+
+        String movie_id = request.getParameter("movie_id");
+
+
+        // Output stream to STDOUT
+        PrintWriter out = response.getWriter();
+        System.out.println("deleting from cart_items: " + movie_id);
+
+        try (Connection conn = dataSource.getConnection()) {
+            // remove row from cart_items if customer_id and movie_id
+            String query = "DELETE FROM cart_items WHERE customer_id = ? AND movie_id = ?";
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            statement.setInt(1, customer_id);
+            statement.setString(2, movie_id);
+
+            int rs = statement.executeUpdate();
+            statement.close();
+            response.setStatus(200);
+            System.out.println("deleted from cart_items: " + movie_id);
+        } catch (Exception e) {
+            // Write error message JSON object to output
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("errorMessage", e.getMessage());
+            out.write(jsonObject.toString());
+
+            // Log error to localhost log
+            request.getServletContext().log("Error:", e);
+            // Set response status to 500 (Internal Server Error)
+            response.setStatus(500);
+        } finally {
+            out.close();
+        }
+    }
+
 }
