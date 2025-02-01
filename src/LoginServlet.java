@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
 
             // See if username and password are in database
-            String query = "SELECT password FROM customers WHERE email = ?";
+            String query = "SELECT password, id FROM customers WHERE email = ?";
 
             PreparedStatement statement = conn.prepareStatement(query);
 
@@ -63,7 +63,7 @@ public class LoginServlet extends HttpServlet {
                 // Login success (username found):
 
                 // set this user into the session
-                request.getSession().setAttribute("user", new User(username));
+                request.getSession().setAttribute("user", new User(rs.getString("id"), username));
 
                 if (rs.getString("password").equals(password)) {
                     responseJsonObject.addProperty("status", "success");

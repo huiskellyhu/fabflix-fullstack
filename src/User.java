@@ -5,9 +5,19 @@
 public class User {
 
     private final String username;
+    private final Integer id;
 
-    public User(String username) {
+    public User(String id, String username) {
         this.username = username;
+        this.id = Integer.parseInt(id);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
 }

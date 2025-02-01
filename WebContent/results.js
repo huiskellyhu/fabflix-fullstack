@@ -110,7 +110,6 @@ function getStarsIdandName (starsdata) {
 }
 function handleMovieListResult(resultData) {
     console.log("handleMovieListResult: populating movielist table from resultData");
-    console.log("latest 10:12")
     console.log("URL params:", window.location.search);
 
     // disabling nextBtn depending on total_results
@@ -150,12 +149,31 @@ function handleMovieListResult(resultData) {
 
 
         rowHTML += "<th>" + resultData[i]["movie_rating"]+ "</th>";
+        rowHTML += "<th> <button class='btn btn-primary add-to-cart' data-movie='" + resultData[i]['movie_id'] + "'>Add</button> </th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
         movie_list_BodyElement.append(rowHTML);
     }
 }
+$(document).on("click", ".add-to-cart", function() {
+    const movieId = $(this).data("movie");
+
+    console.log("adding movie:", movieId);
+    $.ajax(
+        "api/addtocart", {
+            method: "POST",
+            data: {movie_id: movieId},
+            success: function(response) {
+                alert("Successfully added movie to cart!");
+            },
+            error: function(xhr, status, error){
+                alert("Failed to add movie to cart.");
+            }
+        }
+    );
+});
+
 
 // Get id from URL
 let genreId = getParameterByName('genre');
