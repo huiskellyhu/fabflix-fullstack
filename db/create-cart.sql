@@ -1,7 +1,3 @@
-ALTER TABLE movies
-MODIFY COLUMN id varchar(10)
-COLLATE utf8mb4_0900_ai_ci;
-
 CREATE TABLE cart_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
