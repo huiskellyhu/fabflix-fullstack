@@ -106,7 +106,7 @@ public class ResultsServlet extends HttpServlet {
                     "r.rating, " +
                     "COUNT(*) OVER() AS total_results " +
                     "FROM movies AS m " +
-                    "INNER JOIN ratings AS r ON r.movieId = m.id " +
+                    "LEFT JOIN ratings AS r ON r.movieId = m.id " +
                     "INNER JOIN genres_in_movies AS gim ON gim.movieId = m.id " +
                     "INNER JOIN genres AS g ON g.id = gim.genreId " +
                     "INNER JOIN stars_in_movies AS sim ON sim.movieId = m.id " +
