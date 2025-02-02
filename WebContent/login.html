@@ -21,6 +21,7 @@
         <h2 class="mb-3">Log in to Fablix</h2>
         <!-- Set the method to POST to avoid showing the username/password in the URL
              The default action is disabled to allow your own implementation. -->
+        <div id="login_error_message" class="mb-3"></div>
         <form id="login_form" class="login-form" method="post" action="#">
             <input class="login-input" id=username name="username" placeholder="Enter Username" type="text">
             <label for="username"></label>
@@ -29,7 +30,7 @@
             <input type="submit" class="btn btn-primary mt-2 custom-button" value="Login">
         </form>
 
-        <div id="login_error_message"></div>
+
     </div>
 
 <!-- Load jQuery and Bootstrap JS -->

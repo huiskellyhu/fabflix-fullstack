@@ -71,13 +71,13 @@ public class LoginServlet extends HttpServlet {
                 } else {
                     // Login fail (password is incorrect)
                     responseJsonObject.addProperty("status", "fail");
-                    responseJsonObject.addProperty("message", "password is incorrect");
+                    responseJsonObject.addProperty("message", "Password is incorrect.");
                 }
 
             } else {
                 // Login fail (username not found)
                 responseJsonObject.addProperty("status", "fail");
-                responseJsonObject.addProperty("message", "username not found");
+                responseJsonObject.addProperty("message", "Username not found.");
                 // Log to localhost log
                 request.getServletContext().log("Login failed");
             }
