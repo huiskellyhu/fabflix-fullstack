@@ -46,7 +46,7 @@ function getGenresIdandName(genresdata) {
     // NO LIMIT ON GENRES
     for(let i=0; i< genres.length; i++) {
         let [id, name] = genres[i].split(":");
-        genres_limited.push('<a href="results.html?genre=' + id + '">' + name + '</a>');
+        genres_limited.push('<a style="color: #e60073" href="results.html?genre=' + id + '">' + name + '</a>');
     }
     return genres_limited.join(", ");
     // let stringarray = stringdata.split(",");
@@ -61,7 +61,7 @@ function getStarsIdandName (starsdata) {
     // NO LIMIT ON STARS
     for(let i=0; i< stars.length; i++) {
         let [id, name] = stars[i].split(":");
-        stars_limited.push('<a href="single-star.html?id=' + id + '">' + name + '</a>');
+        stars_limited.push('<a style="color: #e60073" href="single-star.html?id=' + id + '">' + name + '</a>');
     }
     return stars_limited.join(", ");
 }
@@ -93,13 +93,31 @@ function handleMovieResult(resultData) {
         //let stars_limited = limitBy(resultData[i]["movie_stars"], 3);
         rowHTML += "<th>" + getStarsIdandName(resultData[i]["movie_stars"]) + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_rating"]+ "</th>";
+        rowHTML += "<th> <button class='btn btn-primary add-to-cart custom-button' data-movie='" + resultData[i]['movie_id'] + "'>Add</button> </th>";
+
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
         movie_list_BodyElement.append(rowHTML);
     }
 }
+$(document).on("click", ".add-to-cart", function() {
+    const movieId = $(this).data("movie");
 
+    console.log("adding movie:", movieId);
+    $.ajax(
+        "api/addtocart", {
+            method: "POST",
+            data: {movie_id: movieId},
+            success: function(response) {
+                alert("Successfully added movie to cart!");
+            },
+            error: function(xhr, status, error){
+                alert("Failed to add movie to cart.");
+            }
+        }
+    );
+});
 
 /**
  * Once this .js is loaded, following scripts will be executed by the browser

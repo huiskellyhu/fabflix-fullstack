@@ -106,11 +106,24 @@ public class ResultsServlet extends HttpServlet {
                     "r.rating, " +
                     "COUNT(*) OVER() AS total_results " +
                     "FROM movies AS m " +
-                    "LEFT JOIN ratings AS r ON r.movieId = m.id " +
+                    "INNER JOIN ratings AS r ON r.movieId = m.id " +
                     "INNER JOIN genres_in_movies AS gim ON gim.movieId = m.id " +
                     "INNER JOIN genres AS g ON g.id = gim.genreId " +
                     "INNER JOIN stars_in_movies AS sim ON sim.movieId = m.id " +
                     "INNER JOIN stars AS s ON s.id = sim.starId ";
+
+//            String query = "SELECT m.id, m.title, m.year, m.director, " +
+//                    "GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name) AS genres, " +
+//                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.movie_count DESC, s.name ASC) AS stars, " +
+//                    "r.rating, " +
+//                    "COUNT(*) OVER() AS total_results " +
+//                    "FROM movies AS m " +
+//                    "INNER JOIN ratings AS r ON r.movieId = m.id " +
+//                    "INNER JOIN genres_in_movies AS gim ON gim.movieId = m.id " +
+//                    "INNER JOIN genres AS g ON g.id = gim.genreId " +
+//                    "INNER JOIN stars_in_movies AS sim ON sim.movieId = m.id " +
+//                    "INNER JOIN (SELECT s.*, COUNT(*) as movie_count " +
+//                    "FROM stars AS s JOIN stars_in_movies as sim ON s.id = sim.starId GROUP BY s.id) AS s ON s.id = sim.starId ";
             if (genreId != null) {
                 // GENRE QUERY
                 query += "WHERE m.id IN (" +

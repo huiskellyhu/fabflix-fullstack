@@ -13,31 +13,20 @@
 
     <title>Login to Fablix</title>
 </head>
-<body>
-<!-- note that this navbar code is referenced from my own personal project, referenced from bootstrap -->
-    <nav class="navbar navbar-expand-lg navbar-light navbar-color">
-        <div class="container">
-            <a class="navbar-brand" >Fabflix</a>
-        </div>
-    </nav>
+<body class="login-page">
+
 
 <!-- FORM FOR LOGIN -->
-    <div class="container mt-5">
-        <h2 class="mb-2">Login to Fablix</h2>
+    <div class="container text-center mt-5 login-container">
+        <h2 class="mb-3">Log in to Fablix</h2>
         <!-- Set the method to POST to avoid showing the username/password in the URL
              The default action is disabled to allow your own implementation. -->
-        <form id="login_form" method="post" action="#">
-            <label><b>Username</b></label>
-            <label>
-                <input name="username" placeholder="Enter Username" type="text">
-            </label>
-            <br>
-            <label><b>Password</b></label>
-            <label>
-                <input name="password" placeholder="Enter Password" type="password">
-            </label>
-            <br>
-            <input type="submit" value="Login">
+        <form id="login_form" class="login-form" method="post" action="#">
+            <input class="login-input" id=username name="username" placeholder="Enter Username" type="text">
+            <label for="username"></label>
+            <input class="login-input" id=password name="password" placeholder="Enter Password" type="password">
+            <label for="password"></label>
+            <input type="submit" class="btn btn-primary mt-2 custom-button" value="Login">
         </form>
 
         <div id="login_error_message"></div>

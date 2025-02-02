@@ -17,7 +17,7 @@ function getAllTitles(){
             rowHTML += "</p> <p>";
         }
         rowHTML +=
-            '<a href="results.html?prefix=' + prefixes[i].toLowerCase() + '">'
+            '<a style="color: #e60073; font-size: 25px" href="results.html?prefix=' + prefixes[i].toLowerCase() + '">'
             + prefixes[i] +
             '</a>   ';
     }
@@ -44,7 +44,7 @@ function handleGenresResult(resultData) {
             rowHTML += "<div class='row'>";
         }
         rowHTML +=
-            '<div class="col-md-3"><a href="results.html?genre=' + resultData[i]['genre_id'] + '">'
+            '<div class="col-md-3"><a style="color: #e60073; font-size: 25px" href="results.html?genre=' + resultData[i]['genre_id'] + '">'
             + resultData[i]['genre_name'] +
             '</a></div>';
 

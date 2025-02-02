@@ -90,7 +90,7 @@ function getGenresIdandName(genresdata) {
 
     for(let i=0; i< Math.min(3, genres.length); i++) {
         let [id, name] = genres[i].split(":");
-        genres_limited.push('<a href="results.html?genre=' + id + '">' + name + '</a>');
+        genres_limited.push('<a style="color: #e60073" href="results.html?genre=' + id + '">' + name + '</a>');
     }
     return genres_limited.join(", ");
     // let stringarray = stringdata.split(",");
@@ -104,7 +104,7 @@ function getStarsIdandName (starsdata) {
 
     for(let i=0; i< Math.min(3, stars.length); i++) {
         let [id, name] = stars[i].split(":");
-        stars_limited.push('<a href="single-star.html?id=' + id + '">' + name + '</a>');
+        stars_limited.push('<a style="color: #e60073" href="single-star.html?id=' + id + '">' + name + '</a>');
     }
     return stars_limited.join(", ");
 }
@@ -132,7 +132,7 @@ function handleMovieListResult(resultData) {
         rowHTML +=
             "<th>" +
             // Add a link to single-movie.html with id passed with GET url parameter
-            '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
+            '<a style="color: #e60073" href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
             + resultData[i]["movie_title"] +     // display movie_title for the link text
             '</a>' +
             "</th>";
@@ -149,7 +149,7 @@ function handleMovieListResult(resultData) {
 
 
         rowHTML += "<th>" + resultData[i]["movie_rating"]+ "</th>";
-        rowHTML += "<th> <button class='btn btn-primary add-to-cart' data-movie='" + resultData[i]['movie_id'] + "'>Add</button> </th>";
+        rowHTML += "<th> <button class='btn btn-primary add-to-cart custom-button' data-movie='" + resultData[i]['movie_id'] + "'>Add</button> </th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page

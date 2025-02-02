@@ -21,20 +21,20 @@ function handleShoppingCartResult(resultData) {
         rowHTML +=
             "<th>" +
             // Add a link to single-movie.html with id passed with GET url parameter
-            '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
+            '<a style="color: #e60073" href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
             + resultData[i]["movie_title"] +     // display movie_title for the link text
             '</a>' +
             "</th>";
 
         // QUANTITY NEEDS TO BE ABLE TO GO UP AND DOWN, AND SEND BACK TO SERVLET TO UPDATE AS A POST?
-        rowHTML += "<th> <button class='decrease-quantity' data-movie='" + resultData[i]['movie_id'] + "'>-</button>";
+        rowHTML += "<th> <button class='btn btn-secondary me-2 decrease-quantity' data-movie='" + resultData[i]['movie_id'] + "'>-</button>";
         rowHTML += "<span id=quantity-" + resultData[i]['movie_id']+ ">" + resultData[i]["movie_quantity"] +"</span>";
-        rowHTML += "<button class='increase-quantity' data-movie='" + resultData[i]['movie_id'] + "'>+</button></th>";
+        rowHTML += "<button class='btn btn-secondary ms-2 increase-quantity' data-movie='" + resultData[i]['movie_id'] + "'>+</button></th>";
 
 
         // CHANGE THIS INTO A DELETE BUTTON
         // TO DELETE: GET SESSION USER CUSTOMER ID AND THEN MOVIE ID
-        rowHTML += "<th> <button class='btn btn-primary delete-from-cart' data-movie='" + resultData[i]['movie_id'] + "'>Delete</button> </th>";
+        rowHTML += "<th> <button class='btn btn-primary delete-from-cart custom-button' data-movie='" + resultData[i]['movie_id'] + "'>Delete</button> </th>";
 
         rowHTML += "<th id=price-" + resultData[i]['movie_id']+ "> $" + resultData[i]["movie_price"] + "</th>";
 
@@ -50,7 +50,7 @@ function handleShoppingCartResult(resultData) {
     // ADDING PROCEED TO PAYMENT BUTTON AND TOTAL CART PRICE FOR SYMMETRY
     let rowHTML = "";
     rowHTML += "<tr>";
-    rowHTML += "<th> <button id='proceedpay' class='btn btn-secondary me-2'>Proceed to Payment</button> </th>";
+    rowHTML += "<th> <button id='proceedpay' class='btn btn-secondary me-2 custom-button'>Proceed to Payment</button> </th>";
     rowHTML += "<th></th><th></th><th></th>"; // empty columns
     rowHTML += "<th id='total-cart-price'> $" + total_cart_price.toString() +  "</th>"; // total_cart_price
     rowHTML += "</tr>";
@@ -59,6 +59,15 @@ function handleShoppingCartResult(resultData) {
     // $("#total_cart_price").text(total_cart_price.toString());
     shoppingcart_BodyElement.append(rowHTML);
 }
+$(document).on('click', '#proceedpay', function() {
+    if(total_cart_price == 0){
+        alert("Your cart is empty.");
+        return;
+    }
+    sessionStorage.setItem("total_cart_price", total_cart_price.toString());
+    console.log("total cart price saved to session:", total_cart_price.toString());
+    window.location.href = 'payment.html';
+});
 
 $(document).on("click", ".delete-from-cart", function() {
     const movieId = $(this).data("movie");
@@ -120,7 +129,7 @@ $(document).on("click", ".increase-quantity, .decrease-quantity", function() {
             //location.reload();
             console.log("updated quantity");
         },
-        error: function() {
+        error: function(xhr, status, error) {
             alert("Failed to update quantity.");
         }
     });
