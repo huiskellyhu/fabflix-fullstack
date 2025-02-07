@@ -24,7 +24,12 @@ function handleLoginResult(resultDataString) {
         console.log("show error message");
         console.log(resultDataJson["message"]);
         $("#login_error_message").text(resultDataJson["message"]);
+        grecaptcha.reset();
     }
+}
+
+function badCaptcha(){
+    $("#login_error_message").text("Please redo reCAPTCHA.");
 }
 
 /**
@@ -45,7 +50,10 @@ function submitLoginForm(formSubmitEvent) {
             method: "POST",
             // Serialize the login form to the data sent by POST request
             data: login_form.serialize(),
-            success: handleLoginResult
+            success: handleLoginResult,
+            error: function(){
+                badCaptcha();
+            }
         }
     );
 }

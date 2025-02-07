@@ -35,12 +35,33 @@ public class LoginServlet extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
+
+        // Verify reCAPTCHA
+        try {
+            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+            System.out.println("gRecaptchaResponse=successful");
+        } catch (Exception e) {
+            System.out.println("gRecaptchaResponse=failed");
+            // Write error message JSON object to output
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("errorMessage", e.getMessage());
+            out.write(jsonObject.toString());
+
+            // Set response status to 500 (Internal Server Error)
+            response.setStatus(500);
+
+            out.close();
+            return;
+        }
+
+
 
         try (Connection conn = dataSource.getConnection()) {
 
@@ -97,6 +118,7 @@ public class LoginServlet extends HttpServlet {
             jsonObject.addProperty("errorMessage", e.getMessage());
             out.write(jsonObject.toString());
 
+            System.out.println("error in the sql");
             // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         } finally {
@@ -129,5 +151,9 @@ public class LoginServlet extends HttpServlet {
 //            }
 //        }
 //        response.getWriter().write(responseJsonObject.toString());
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        doGet(request, response);
     }
 }
