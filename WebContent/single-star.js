@@ -64,15 +64,15 @@ function handleResult(resultData) {
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML +=
-            "<th>" +
+            "<td>" +
             // Add a link to single-movie.html with id passed with GET url parameter
-            '<a style="color: #e60073" href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
+            '<a style="color: #e60073" href="single-movie.html?id=' + encodeURIComponent(resultData[i]['movie_id']) + '">'
             + resultData[i]["movie_title"] +     // display movie_title for the link text
             '</a>' +
-            "</th>";
+            "</td>";
         //rowHTML += "<th>" + resultData[i]["movie_title"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
+        rowHTML += "<td>" + resultData[i]["movie_year"] + "</td>";
+        rowHTML += "<td>" + resultData[i]["movie_director"] + "</td>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
@@ -85,7 +85,7 @@ function handleResult(resultData) {
  */
 
 // Get id from URL
-let starId = getParameterByName('id');
+let starId = getParameterByName('id').trim();
 
 // Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({

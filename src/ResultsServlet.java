@@ -27,6 +27,7 @@ public class ResultsServlet extends HttpServlet {
     public void init(ServletConfig config) {
         try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            System.out.println("result servlet established");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -40,7 +41,8 @@ public class ResultsServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         response.setContentType("application/json"); // Response mime type
-
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
         // Retrieve parameter id from url request.
         String genreId = request.getParameter("genre");
@@ -68,10 +70,11 @@ public class ResultsServlet extends HttpServlet {
         request.getServletContext().log("getting page: " + page);
         request.getServletContext().log("getting returning: " + returning);
 
-        System.out.println("Received Sort: " + sort);
-        System.out.println("Received Limit: " + limit);
-        System.out.println("Received Page: " + page);
-        System.out.println("Received returning: " + returning);
+//        System.out.println("Received Sort: " + sort);
+//        System.out.println("Received Limit: " + limit);
+//        System.out.println("Received Page: " + page);
+//        System.out.println("Received returning: " + returning);
+        System.out.println("Received genreId: " + genreId);
 
         // setting default values
         if (sort == null){
@@ -100,48 +103,71 @@ public class ResultsServlet extends HttpServlet {
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
-            String query = "SELECT m.id, m.title, m.year, m.director, " +
-                    "GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name) AS genres, " +
-                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY (SELECT COUNT(*) FROM stars_in_movies as sim2 WHERE sim2.starId = s.id) DESC, s.name ASC) AS stars, " +
-                    "r.rating, " +
-                    "COUNT(*) OVER() AS total_results " +
-                    "FROM movies AS m " +
-                    "LEFT JOIN ratings AS r ON r.movieId = m.id " +
-                    "INNER JOIN genres_in_movies AS gim ON gim.movieId = m.id " +
-                    "INNER JOIN genres AS g ON g.id = gim.genreId " +
-                    "INNER JOIN stars_in_movies AS sim ON sim.movieId = m.id " +
-                    "INNER JOIN stars AS s ON s.id = sim.starId ";
+
+            // OLD QUERY BELOW THIS ---
+            // old query really fast for small results, new query more good in general but slow for small results
+            // IMPROVEMENTS MADE FOR P3:
+            //      SELECT FOR GENRES FIRST INSTEAD OF NESTED SUBQUERIES
+            //      MAKE A DYNAMIC COLUMN FOR movie_count FOR EACH STAR INSTEAD OF NESTED SUBQUERY FOR ORDERING
+            //              (a lot of overhead when querying for stars i think)
+            // test in mysql workbench
+            // used some tips from this https://www.geeksforgeeks.org/best-practices-for-sql-query-optimizations/
+
+
+            String query = "SELECT m.id, m.title, m.year, m.director, g2.genres, s2.stars, r.rating, COUNT(*) OVER() AS total_results FROM movies AS m " +
+                            "LEFT JOIN ratings AS r ON r.movieId = m.id " +
+                            "INNER JOIN ( " +
+                            "      SELECT gm.movieId, " +
+                            "      GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name SEPARATOR ', ') AS genres " +
+                            "      FROM genres_in_movies gm " +
+                            "      INNER JOIN genres g ON g.id = gm.genreId " +
+                            "      GROUP BY gm.movieId " +
+                            " ) AS g2 ON g2.movieId = m.id " +
+                            "INNER JOIN ( " +
+                            "       SELECT sm.movieId, " +
+                            "       GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.movie_count DESC, s.name ASC SEPARATOR ', ') AS stars FROM stars_in_movies sm  " +
+                            "INNER JOIN ( " +
+                            "       SELECT s.id, s.name, COUNT(sim.movieId) AS movie_count FROM stars s " +
+                            "       INNER JOIN stars_in_movies sim ON s.id = sim.starId " +
+                            "       GROUP BY s.id " +
+                            " ) AS s ON s.id = sm.starId " +
+                            "GROUP BY sm.movieId " +
+                            " ) AS s2 ON s2.movieId = m.id " +
+                            "INNER JOIN genres_in_movies gim ON gim.movieId = m.id " +
+                            "WHERE 1=1 ";
 
 //            String query = "SELECT m.id, m.title, m.year, m.director, " +
 //                    "GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name) AS genres, " +
-//                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.movie_count DESC, s.name ASC) AS stars, " +
+//                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY (SELECT COUNT(*) FROM stars_in_movies as sim2 WHERE sim2.starId = s.id) DESC, s.name ASC) AS stars, " +
 //                    "r.rating, " +
 //                    "COUNT(*) OVER() AS total_results " +
 //                    "FROM movies AS m " +
-//                    "INNER JOIN ratings AS r ON r.movieId = m.id " +
+//                    "LEFT JOIN ratings AS r ON r.movieId = m.id " +
 //                    "INNER JOIN genres_in_movies AS gim ON gim.movieId = m.id " +
 //                    "INNER JOIN genres AS g ON g.id = gim.genreId " +
 //                    "INNER JOIN stars_in_movies AS sim ON sim.movieId = m.id " +
-//                    "INNER JOIN (SELECT s.*, COUNT(*) as movie_count " +
-//                    "FROM stars AS s JOIN stars_in_movies as sim ON s.id = sim.starId GROUP BY s.id) AS s ON s.id = sim.starId ";
+//                    "INNER JOIN stars AS s ON s.id = sim.starId ";
+
             if (genreId != null) {
                 // GENRE QUERY
-                query += "WHERE m.id IN (" +
-                        "    SELECT movieId " +
-                        "    FROM genres_in_movies " +
-                        "    WHERE genreId = ?) ";
+//                query += "WHERE m.id IN (" +
+//                        "    SELECT movieId " +
+//                        "    FROM genres_in_movies " +
+//                        "    WHERE genreId = ?) ";
+                query += "AND gim.genreId = ?";
+//                query += "AND g2.genres LIKE ? ";
 
             } else if (prefixId != null) {
                 // PREFIX QUERY
                 if (prefixId.equals("*")) {
                     // non-alphanumeric chars
-                    query += "WHERE m.title REGEXP '[^a-zA-Z0-9]' ";
+                    query += "AND m.title REGEXP '[^a-zA-Z0-9]' ";
                 }
                 else {
-                    query += "WHERE m.title LIKE ? ";
+                    query += "AND m.title LIKE ? ";
                 }
             } else {
-                query += "WHERE 1=1 "; // to use AND
+//                query += "WHERE 1=1 "; // to use AND
 
                 if (title != null && !title.isEmpty()) {
                     query += "AND m.title LIKE ? ";
@@ -153,9 +179,10 @@ public class ResultsServlet extends HttpServlet {
                     query += "AND m.director LIKE ? ";
                 }
                 if (star != null && !star.isEmpty()) {
-                    query += "AND m.id IN ( " +
-                             "SELECT sim.movieId FROM stars_in_movies as sim " +
-                             "JOIN stars as s ON sim.starId = s.id WHERE sim.starId = s.id AND s.name LIKE ?) ";
+//                    query += "AND m.id IN ( " +
+//                             "SELECT sim.movieId FROM stars_in_movies as sim " +
+//                             "JOIN stars as s ON sim.starId = s.id WHERE sim.starId = s.id AND s.name LIKE ?) ";
+                    query += "AND s2.stars LIKE ? ";
                 }
             }
 

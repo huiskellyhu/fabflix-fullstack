@@ -125,32 +125,6 @@ public class LoginServlet extends HttpServlet {
             out.close();
         }
 
-        /* This example only allows username/password to be test/test
-        /  in the real project, you should talk to the database to verify username/password
-        */
-//        JsonObject responseJsonObject = new JsonObject();
-//        if (username.equals("anteater") && password.equals("123456")) {
-//            // Login success:
-//
-//            // set this user into the session
-//            request.getSession().setAttribute("user", new User(username));
-//
-//            responseJsonObject.addProperty("status", "success");
-//            responseJsonObject.addProperty("message", "success");
-//
-//        } else {
-//            // Login fail
-//            responseJsonObject.addProperty("status", "fail");
-//            // Log to localhost log
-//            request.getServletContext().log("Login failed");
-//            // sample error messages. in practice, it is not a good idea to tell user which one is incorrect/not exist.
-//            if (!username.equals("anteater")) {
-//                responseJsonObject.addProperty("message", "user " + username + " doesn't exist");
-//            } else {
-//                responseJsonObject.addProperty("message", "incorrect password");
-//            }
-//        }
-//        response.getWriter().write(responseJsonObject.toString());
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

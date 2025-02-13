@@ -38,10 +38,12 @@ public class SingleStarServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("application/json"); // Response mime type
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
         // Retrieve parameter id from url request.
         String id = request.getParameter("id");
-
+        System.out.println("Received id: " + id);
         // The log message can be found in localhost log
         request.getServletContext().log("getting id: " + id);
 

@@ -90,7 +90,7 @@ function getGenresIdandName(genresdata) {
 
     for(let i=0; i< Math.min(3, genres.length); i++) {
         let [id, name] = genres[i].split(":");
-        genres_limited.push('<a style="color: #e60073" href="results.html?genre=' + id + '">' + name + '</a>');
+        genres_limited.push('<a style="color: #e60073" href="results.html?genre=' + encodeURIComponent(id) + '">' + name + '</a>');
     }
     return genres_limited.join(", ");
     // let stringarray = stringdata.split(",");
@@ -104,7 +104,7 @@ function getStarsIdandName (starsdata) {
 
     for(let i=0; i< Math.min(3, stars.length); i++) {
         let [id, name] = stars[i].split(":");
-        stars_limited.push('<a style="color: #e60073" href="single-star.html?id=' + id + '">' + name + '</a>');
+        stars_limited.push('<a style="color: #e60073" href="single-star.html?id=' + encodeURIComponent(id) + '">' + name + '</a>');
     }
     return stars_limited.join(", ");
 }
@@ -130,26 +130,26 @@ function handleMovieListResult(resultData) {
 
         // -- MOVIE TITLE HYPERLINKS --
         rowHTML +=
-            "<th>" +
+            "<td>" +
             // Add a link to single-movie.html with id passed with GET url parameter
-            '<a style="color: #e60073" href="single-movie.html?id=' + resultData[i]['movie_id'] + '">'
+            '<a style="color: #e60073" href="single-movie.html?id=' + encodeURIComponent(resultData[i]['movie_id']) + '">'
             + resultData[i]["movie_title"] +     // display movie_title for the link text
             '</a>' +
-            "</th>";
+            "</td>";
 
-        rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
+        rowHTML += "<td>" + resultData[i]["movie_year"] + "</td>";
+        rowHTML += "<td>" + resultData[i]["movie_director"] + "</td>";
         // rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
-        rowHTML += "<th>" + getGenresIdandName(resultData[i]["movie_genres"]) + "</th>";
+        rowHTML += "<td>" + getGenresIdandName(resultData[i]["movie_genres"]) + "</td>";
 
         // -- MOVIE STARS HYPERLINKS -- (format= id:starname, id:starname,...)
         // rowHTML += "<th>" + resultData[i]["movie_stars"] + "</th>";
         //let stars_limited = limitBy(resultData[i]["movie_stars"], 3);
-        rowHTML += "<th>" + getStarsIdandName(resultData[i]["movie_stars"]) + "</th>";
+        rowHTML += "<td>" + getStarsIdandName(resultData[i]["movie_stars"]) + "</td>";
 
 
-        rowHTML += "<th>" + resultData[i]["movie_rating"]+ "</th>";
-        rowHTML += "<th> <button class='btn btn-primary add-to-cart custom-button' data-movie='" + resultData[i]['movie_id'] + "'>Add</button> </th>";
+        rowHTML += "<td>" + resultData[i]["movie_rating"]+ "</td>";
+        rowHTML += "<td> <button class='btn btn-primary add-to-cart custom-button' data-movie='" + resultData[i]['movie_id'] + "'>Add</button> </td>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
@@ -188,10 +188,10 @@ let page = getParameterByName('page') || 1;
 let returning = getParameterByName('returning') || 0;
 
 if (genreId) {
-    apiURL = "api/results?genre=" + genreId;
+    apiURL = "api/results?genre=" + genreId.trim();
 }
 else if (prefixId) {
-    apiURL = "api/results?prefix=" + prefixId;
+    apiURL = "api/results?prefix=" + prefixId.trim();
 }
 else {
     apiURL = "api/results?";

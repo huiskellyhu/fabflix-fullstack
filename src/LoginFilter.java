@@ -20,10 +20,17 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        System.out.println("LoginFilter: " + httpRequest.getRequestURI());
+        String uri = httpRequest.getRequestURI();
+        if (uri.contains("/_dashboard")) {
+            // skip this filter if employee login
+            chain.doFilter(request, response);
+            return;
+        }
+
+        System.out.println("LoginFilter: " + uri);
 
         // Check if this URL is allowed to access without logging in
-        if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
+        if (this.isUrlAllowedWithoutLogin(uri)) {
             // Keep default action: pass along the filter chain
             chain.doFilter(request, response);
             return;
@@ -50,6 +57,7 @@ public class LoginFilter implements Filter {
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
         allowedURIs.add("api/login");
+        allowedURIs.add("api/dashboardlogin");
         allowedURIs.add("styles.css");
     }
 

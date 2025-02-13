@@ -46,7 +46,7 @@ function getGenresIdandName(genresdata) {
     // NO LIMIT ON GENRES
     for(let i=0; i< genres.length; i++) {
         let [id, name] = genres[i].split(":");
-        genres_limited.push('<a style="color: #e60073" href="results.html?genre=' + id + '">' + name + '</a>');
+        genres_limited.push('<a style="color: #e60073" href="results.html?genre=' + encodeURIComponent(id) + '">' + name + '</a>');
     }
     return genres_limited.join(", ");
     // let stringarray = stringdata.split(",");
@@ -61,7 +61,7 @@ function getStarsIdandName (starsdata) {
     // NO LIMIT ON STARS
     for(let i=0; i< stars.length; i++) {
         let [id, name] = stars[i].split(":");
-        stars_limited.push('<a style="color: #e60073" href="single-star.html?id=' + id + '">' + name + '</a>');
+        stars_limited.push('<a style="color: #e60073" href="single-star.html?id=' + encodeURIComponent(id) + '">' + name + '</a>');
     }
     return stars_limited.join(", ");
 }
@@ -85,15 +85,15 @@ function handleMovieResult(resultData) {
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-        rowHTML += "<th>" + getGenresIdandName(resultData[i]["movie_genres"]) + "</th>";
+        rowHTML += "<td>" + resultData[i]["movie_director"] + "</td>";
+        rowHTML += "<td>" + getGenresIdandName(resultData[i]["movie_genres"]) + "</td>";
 
         // -- MOVIE STARS HYPERLINKS -- (format= id:starname, id:starname,...)
         // rowHTML += "<th>" + resultData[i]["movie_stars"] + "</th>";
         //let stars_limited = limitBy(resultData[i]["movie_stars"], 3);
-        rowHTML += "<th>" + getStarsIdandName(resultData[i]["movie_stars"]) + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_rating"]+ "</th>";
-        rowHTML += "<th> <button class='btn btn-primary add-to-cart custom-button' data-movie='" + resultData[i]['movie_id'] + "'>Add</button> </th>";
+        rowHTML += "<td>" + getStarsIdandName(resultData[i]["movie_stars"]) + "</td>";
+        rowHTML += "<td>" + resultData[i]["movie_rating"]+ "</td>";
+        rowHTML += "<td> <button class='btn btn-primary add-to-cart custom-button' data-movie='" + resultData[i]['movie_id'] + "'>Add</button> </td>";
 
         rowHTML += "</tr>";
 
