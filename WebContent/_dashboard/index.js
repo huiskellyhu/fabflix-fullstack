@@ -17,14 +17,13 @@ function handleMetadataResult(resultData) {
     // </table>
     // Iterate through resultData
     let metadataContainer = jQuery("#metadata-body");
-    metadataContainer.empty(); // Clear previous content
+    metadataContainer.empty();
 
-    let tables = {}; // Store tables dynamically
+    let tables = {};
 
     for (let i = 0; i < resultData.length; i++) {
         let tableName = resultData[i]['table'];
 
-        // ✅ Correct filtering: Show only "movies", "stars", and "sales" tables
         if (tableName !== "movies" && tableName !== "stars" && tableName !== "sales") {
             continue;
         }
@@ -32,7 +31,6 @@ function handleMetadataResult(resultData) {
         let columnName = resultData[i]['column'];
         let columnType = resultData[i]['type'] + "(" + resultData[i]['size'] + ")";
 
-        // ✅ Create a new table if it's not already created
         if (!tables[tableName]) {
             tables[tableName] = `<h4>  ${tableName}</h4>
                 <table id="${tableName}" class="table">
@@ -43,7 +41,6 @@ function handleMetadataResult(resultData) {
             `;
         }
 
-        // ✅ Append rows to the correct table
         tables[tableName] += `
             <tr>
                 <td>${columnName}</td>
@@ -52,9 +49,8 @@ function handleMetadataResult(resultData) {
         `;
     }
 
-    // ✅ Append all tables to metadata container
     for (let table in tables) {
-        tables[table] += "</tbody></table>"; // Close table properly
+        tables[table] += "</tbody></table>";
         metadataContainer.append(tables[table]);
     }
 }
@@ -74,7 +70,7 @@ function handleMetadataResult(resultData) {
 //     url: "api/metadata",
 //     success: (resultData) => handleMetadataResult(resultData)
 // });
-console.log("going to api/metadatadash");
+
 $.ajax(
     "api/dashboardmetadata", {
         method: "GET",
