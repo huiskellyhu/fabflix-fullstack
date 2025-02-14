@@ -104,37 +104,60 @@ public class ResultsServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
 
+            // newest query
+            // query speed: much faster but inconsistent sometimes for some reason? average is 700ms.
+            String query = "SELECT m.id, m.title, m.year, m.director, " +
+                            "COALESCE(r.rating, NULL) AS movie_rating, " +
+                            "(SELECT GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name ASC) " +
+                            "       FROM genres_in_movies gim " +
+                            "       INNER JOIN genres g ON gim.genreId = g.id " +
+                            "       WHERE gim.movieId = m.id) AS movie_genres, " +
+                            "(SELECT GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY star_count DESC, s.name ASC) " +
+                            "       FROM stars_in_movies sim " +
+                            "       INNER JOIN (SELECT s.id, s.name, COUNT(*) AS star_count " +
+                            "           FROM stars s " +
+                            "           INNER JOIN stars_in_movies sim2 ON s.id = sim2.starId " +
+                            "           GROUP BY s.id) s ON sim.starId = s.id " +
+                            "           WHERE sim.movieId = m.id) AS movie_stars, " +
+                            "COUNT(*) OVER() AS total_results " +
+                            "FROM movies m " +
+                            "LEFT JOIN ratings r ON r.movieId = m.id " +
+                            "WHERE 1=1 ";
+
+
+
             // OLD QUERY BELOW THIS ---
             // old query really fast for small results, new query more good in general but slow for small results
             // IMPROVEMENTS MADE FOR P3:
             //      SELECT FOR GENRES FIRST INSTEAD OF NESTED SUBQUERIES
             //      MAKE A DYNAMIC COLUMN FOR movie_count FOR EACH STAR INSTEAD OF NESTED SUBQUERY FOR ORDERING
             //              (a lot of overhead when querying for stars i think)
+            //      USED EXISTS INSTEAD OF IN FOR "?" AREAS
             // test in mysql workbench
             // used some tips from this https://www.geeksforgeeks.org/best-practices-for-sql-query-optimizations/
 
 
-            String query = "SELECT m.id, m.title, m.year, m.director, g2.genres, s2.stars, r.rating, COUNT(*) OVER() AS total_results FROM movies AS m " +
-                            "LEFT JOIN ratings AS r ON r.movieId = m.id " +
-                            "INNER JOIN ( " +
-                            "      SELECT gm.movieId, " +
-                            "      GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name SEPARATOR ', ') AS genres " +
-                            "      FROM genres_in_movies gm " +
-                            "      INNER JOIN genres g ON g.id = gm.genreId " +
-                            "      GROUP BY gm.movieId " +
-                            " ) AS g2 ON g2.movieId = m.id " +
-                            "INNER JOIN ( " +
-                            "       SELECT sm.movieId, " +
-                            "       GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.movie_count DESC, s.name ASC SEPARATOR ', ') AS stars FROM stars_in_movies sm  " +
-                            "INNER JOIN ( " +
-                            "       SELECT s.id, s.name, COUNT(sim.movieId) AS movie_count FROM stars s " +
-                            "       INNER JOIN stars_in_movies sim ON s.id = sim.starId " +
-                            "       GROUP BY s.id " +
-                            " ) AS s ON s.id = sm.starId " +
-                            "GROUP BY sm.movieId " +
-                            " ) AS s2 ON s2.movieId = m.id " +
-                            "INNER JOIN genres_in_movies gim ON gim.movieId = m.id " +
-                            "WHERE 1=1 ";
+//            String query = "SELECT m.id, m.title, m.year, m.director, g2.genres, s2.stars, r.rating, COUNT(*) OVER() AS total_results FROM movies AS m " +
+//                            "LEFT JOIN ratings AS r ON r.movieId = m.id " +
+//                            "INNER JOIN ( " +
+//                            "      SELECT gm.movieId, " +
+//                            "      GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name SEPARATOR ', ') AS genres " +
+//                            "      FROM genres_in_movies gm " +
+//                            "      INNER JOIN genres g ON g.id = gm.genreId " +
+//                            "      GROUP BY gm.movieId " +
+//                            " ) AS g2 ON g2.movieId = m.id " +
+//                            "INNER JOIN ( " +
+//                            "       SELECT sm.movieId, " +
+//                            "       GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.movie_count DESC, s.name ASC SEPARATOR ', ') AS stars FROM stars_in_movies sm  " +
+//                            "INNER JOIN ( " +
+//                            "       SELECT s.id, s.name, COUNT(sim.movieId) AS movie_count FROM stars s " +
+//                            "       INNER JOIN stars_in_movies sim ON s.id = sim.starId " +
+//                            "       GROUP BY s.id " +
+//                            " ) AS s ON s.id = sm.starId " +
+//                            "GROUP BY sm.movieId " +
+//                            " ) AS s2 ON s2.movieId = m.id " +
+//                            "INNER JOIN genres_in_movies gim ON gim.movieId = m.id " +
+//                            "WHERE 1=1 ";
 
 //            String query = "SELECT m.id, m.title, m.year, m.director, " +
 //                    "GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name) AS genres, " +
@@ -154,8 +177,9 @@ public class ResultsServlet extends HttpServlet {
 //                        "    SELECT movieId " +
 //                        "    FROM genres_in_movies " +
 //                        "    WHERE genreId = ?) ";
-                query += "AND gim.genreId = ?";
+//                query += "AND gim.genreId = ?";
 //                query += "AND g2.genres LIKE ? ";
+                query += "AND EXISTS (SELECT 1 FROM genres_in_movies gim WHERE gim.movieId = m.id AND gim.genreId = ?) ";
 
             } else if (prefixId != null) {
                 // PREFIX QUERY
@@ -182,7 +206,10 @@ public class ResultsServlet extends HttpServlet {
 //                    query += "AND m.id IN ( " +
 //                             "SELECT sim.movieId FROM stars_in_movies as sim " +
 //                             "JOIN stars as s ON sim.starId = s.id WHERE sim.starId = s.id AND s.name LIKE ?) ";
-                    query += "AND s2.stars LIKE ? ";
+//                    query += "AND s2.stars LIKE ? ";
+                    query += "AND EXISTS (SELECT 1 FROM stars_in_movies sim " +
+                            "   INNER JOIN stars s ON sim.starId = s.id " +
+                            "   WHERE sim.movieId = m.id AND s.name LIKE ?) ";
                 }
             }
 
@@ -260,9 +287,9 @@ public class ResultsServlet extends HttpServlet {
                 String movie_title = rs.getString("title");
                 String movie_year = rs.getString("year");
                 String movie_director = rs.getString("director");
-                String movie_genres = rs.getString("genres");
-                String movie_stars = rs.getString("stars");
-                String movie_rating = rs.getString("rating");
+                String movie_genres = rs.getString("movie_genres");
+                String movie_stars = rs.getString("movie_stars");
+                String movie_rating = rs.getString("movie_rating");
                 String total_results = rs.getString("total_results");
 
                 // Create a JsonObject based on the data we retrieve from rs

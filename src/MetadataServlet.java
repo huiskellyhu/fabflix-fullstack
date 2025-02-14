@@ -53,41 +53,52 @@ public class MetadataServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
             // reference: https://www.baeldung.com/jdbc-database-metadata
             // https://docs.oracle.com/javase/8/docs/api/java/sql/DatabaseMetaData.html
+            DatabaseMetaData data = conn.getMetaData();
 
             // get all table names with show table
 
             // get metadata for each table name
 
+            ResultSet tables = data.getTables("moviedb", null, "%", new String[]{"TABLE"});
+            ArrayList<String> tableList = new ArrayList<>();
 
-
-
-
-            DatabaseMetaData data = conn.getMetaData();
-
-            // get all table names
-            String query = "SHOW TABLES";
-
-            // Declare our statement
-            PreparedStatement statement = conn.prepareStatement(query);
-            ResultSet rs2 = statement.executeQuery();
-
-            ArrayList<String> list = new ArrayList<String>();
-            while (rs2.next())
-            {
-                list.add(rs2.getString(1));
+            while (tables.next()) {
+                String tableName = tables.getString("TABLE_NAME");
+                tableList.add(tableName);
             }
-            rs2.close();
-            statement.close();
-
-            ResultSet rs = data.getColumns(null, "moviedb", "sys_config", "%");
+            //tableList.add("sys_config");
 
             JsonArray jsonArray = new JsonArray();
 
-            while (rs.next()) {
-                String table = rs.getString("TABLE_NAME");
-                String column = rs.getString("COLUMN_NAME");
-                String type = rs.getString("TYPE_NAME");
-                String size = rs.getString("COLUMN_SIZE");
+            for (String tableName : tableList) {
+                ResultSet rs = data.getColumns("moviedb", null, tableName, "%");
+
+                while (rs.next()) {
+                    String table = rs.getString("TABLE_NAME");
+                    String column = rs.getString("COLUMN_NAME");
+                    String type = rs.getString("TYPE_NAME");
+                    String size = rs.getString("COLUMN_SIZE");
+
+                    // Create a JsonObject based on the data we retrieve from rs
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("table", table);
+                    jsonObject.addProperty("column", column);
+                    jsonObject.addProperty("type", type);
+                    jsonObject.addProperty("size", size);
+                    System.out.println(table + "  " + column + " "  + type + " " + size);
+                    jsonArray.add(jsonObject);
+                }
+                rs.close();
+            }
+            tables.close();
+
+            // get sys_config
+            ResultSet sys_config_only = data.getColumns(null, null, "sys_config", "%");
+            while (sys_config_only.next()){
+                String table = sys_config_only.getString("TABLE_NAME");
+                String column = sys_config_only.getString("COLUMN_NAME");
+                String type = sys_config_only.getString("TYPE_NAME");
+                String size = sys_config_only.getString("COLUMN_SIZE");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
@@ -95,10 +106,10 @@ public class MetadataServlet extends HttpServlet {
                 jsonObject.addProperty("column", column);
                 jsonObject.addProperty("type", type);
                 jsonObject.addProperty("size", size);
-                System.out.println(table + "  " + column + " "  + type + " " + size);
+                //System.out.println(table + "  " + column + " "  + type + " " + size);
                 jsonArray.add(jsonObject);
             }
-            rs.close();
+            sys_config_only.close();
 
             // Log to localhost log
             request.getServletContext().log("getting " + jsonArray.size() + " results");

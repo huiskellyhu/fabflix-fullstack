@@ -24,9 +24,9 @@ function handleMetadataResult(resultData) {
     for (let i = 0; i < resultData.length; i++) {
         let tableName = resultData[i]['table'];
 
-        if (tableName !== "movies" && tableName !== "stars" && tableName !== "sales") {
-            continue;
-        }
+        // if (tableName !== "movies" && tableName !== "stars" && tableName !== "sales") {
+        //     continue;
+        // }
 
         let columnName = resultData[i]['column'];
         let columnType = resultData[i]['type'] + "(" + resultData[i]['size'] + ")";

@@ -31,8 +31,6 @@ function handleResult(resultDataString) {
         $("#add-star-message").text(resultDataJson["message"]);
     }
 
-
-    //
 }
 /**
  * Submit the form content with POST method

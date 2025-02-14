@@ -65,7 +65,7 @@ public class AddStarServlet extends HttpServlet {
 
 
         try (Connection conn = dataSource.getConnection()) {
-            String max_id_query = "SELECT max(substring(id, 3)) as max_id FROM stars as max_id";
+            String max_id_query = "SELECT max(substring(id, 3)) as max_id FROM stars";
             PreparedStatement max_id_statement = conn.prepareStatement(max_id_query);
 
             ResultSet max_id_result = max_id_statement.executeQuery();
