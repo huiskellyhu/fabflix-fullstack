@@ -40,6 +40,9 @@ function getParameterByName(target) {
  */
 
 function getGenresIdandName(genresdata) {
+    if(genresdata == null){
+        return "";
+    }
     let genres = genresdata.split(",");
     let genres_limited = [];
 
@@ -55,6 +58,9 @@ function getGenresIdandName(genresdata) {
 }
 
 function getStarsIdandName (starsdata) {
+    if(starsdata == null){
+        return "";
+    }
     let stars = starsdata.split(",");
     let stars_limited = [];
 

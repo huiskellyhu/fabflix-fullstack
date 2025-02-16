@@ -1,4 +1,4 @@
-package ParsingFiles;
+package ParsingFiles.src.main.java;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,9 +9,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -24,6 +21,8 @@ import org.xml.sax.helpers.DefaultHandler;
 public class StarsParser extends DefaultHandler {
 
     List<Stars> stars;
+    private Integer stars_added = 0;
+    private Integer stars_dupes = 0;
 
     private String tempVal;
 
@@ -46,12 +45,12 @@ public class StarsParser extends DefaultHandler {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             conn.setAutoCommit(false);
-            insertStar = conn.prepareStatement("INSERT INTO stars_backup (id, name,  birthYear) VALUES (?, ?, ?)");
+            insertStar = conn.prepareStatement("INSERT INTO stars (id, name,  birthYear) VALUES (?, ?, ?)");
             // checkDupe = conn.prepareStatement("SELECT * FROM stars WHERE name = ? AND birthYear = ?");
 
             // get current max id
             Statement statement = conn.createStatement();
-            ResultSet maxRs = statement.executeQuery("SELECT max(substring(id, 3)) FROM stars_backup");
+            ResultSet maxRs = statement.executeQuery("SELECT max(substring(id, 3)) FROM stars");
             if (maxRs.next()) {
                 currentId = maxRs.getInt(1) + 1;
             }
@@ -83,7 +82,7 @@ public class StarsParser extends DefaultHandler {
             SAXParser sp = spf.newSAXParser();
 
             //parse the file and also register this class for call backs
-            sp.parse("actors63.xml", this);
+            sp.parse("ParsingFiles/actors63.xml", this);
 
         } catch (SAXException se) {
             se.printStackTrace();
@@ -111,12 +110,14 @@ public class StarsParser extends DefaultHandler {
      */
     private void printData() {
 
-        System.out.println("No of Stars '" + stars.size() + "'.");
+        // System.out.println("No of Stars '" + stars.size() + "'.");
+        System.out.println("Inserted " + stars_added + " stars.");
+        System.out.println(stars_dupes + " stars duplicate.");
 
-        Iterator<Stars> it = stars.iterator();
-        while (it.hasNext()) {
-            System.out.println(it.next().toString());
-        }
+//        Iterator<Stars> it = stars.iterator();
+//        while (it.hasNext()) {
+//            System.out.println(it.next().toString());
+//        }
     }
 
     private void batchInsert(){
@@ -132,6 +133,7 @@ public class StarsParser extends DefaultHandler {
                     PrintWriter writer = new PrintWriter(new FileWriter("StarDuplicates.txt", true));
                     writer.println("Duplicate " + star.toString());
                     writer.close();
+                    stars_dupes++;
                 } else {
                     // No duplicate, insert the new star into the database
                     all_stars.add(current_key);
@@ -153,7 +155,7 @@ public class StarsParser extends DefaultHandler {
                         conn.commit();
                         batch_count = 0;
                     }
-
+                    stars_added++;
 
                 }
 

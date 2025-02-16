@@ -1,4 +1,4 @@
-package ParsingFiles;
+package ParsingFiles.src.main.java;
 
 public class Stars {
     private String id;

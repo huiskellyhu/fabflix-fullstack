@@ -27,7 +27,7 @@ proc: BEGIN
         LEAVE proc;
     END IF;
 -- new movie
-    SELECT CONCAT('tt', (SELECT max(substring(id, 3)) FROM movies) + 1) INTO movie_id;
+    SELECT CONCAT('tt', LPAD((SELECT max(substring(id, 3))+1 FROM movies), 7, '0')) INTO movie_id;
     INSERT INTO movies (id, title, year, director, price) VALUES (movie_id, movie_title, movie_year, movie_director, FLOOR(1+RAND() * 100));
 
 -- new star or exists
