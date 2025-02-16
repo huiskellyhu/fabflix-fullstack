@@ -82,7 +82,7 @@ public class StarsParser extends DefaultHandler {
             SAXParser sp = spf.newSAXParser();
 
             //parse the file and also register this class for call backs
-            sp.parse("ParsingFiles/actors63.xml", this);
+            sp.parse("actors63.xml", this);
 
         } catch (SAXException se) {
             se.printStackTrace();

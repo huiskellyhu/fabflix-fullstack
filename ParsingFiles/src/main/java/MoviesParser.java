@@ -97,7 +97,7 @@ public class MoviesParser extends DefaultHandler {
             SAXParser sp = spf.newSAXParser();
 
             //parse the file and also register this class for call backs
-            sp.parse("ParsingFiles/mains243.xml", this);
+            sp.parse("mains243.xml", this);
 
         } catch (SAXException se) {
             se.printStackTrace();
