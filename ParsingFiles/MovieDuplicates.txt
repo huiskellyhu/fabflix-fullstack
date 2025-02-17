@@ -1,0 +1,30 @@
+Duplicate Movie Details - Id:Z0220, Title:Romeo and Juliet, Year:1908, Director:Unknown2
+Duplicate Movie Details - Id:Z0230, Title:Romeo and Juliet, Year:1908, Director:Unknown2
+Duplicate Movie Details - Id:Z0250, Title:Romeo and Juliet, Year:1911, Director:Unknown2
+Duplicate Movie Details - Id:Z0270, Title:Romeo and Juliet, Year:1916, Director:Unknown2
+Duplicate Movie Details - Id:JuD11, Title:La Fin de Jour, Year:1939, Director:Duvivier
+Duplicate Movie Details - Id:GCt30, Title:The Rat, Year:1927, Director:Cutts
+Duplicate Movie Details - Id:FNm10, Title:Doctor Jack, Year:1922, Director:Newmeyer
+Duplicate Movie Details - Id:MLR25, Title:Waterloo Bridge, Year:1940, Director:M.LeRoy
+Duplicate Movie Details - Id:VrS40, Title:Evergreen, Year:1934, Director:V.Saville
+Duplicate Movie Details - Id:RdR64, Title:Topper Returns, Year:1941, Director:delRuth
+Duplicate Movie Details - Id:OP13, Title:Forever Amber, Year:1947, Director:Preminger
+Duplicate Movie Details - Id:PaJ2, Title:Ferry Pilot, Year:1941, Director:P.Jackson
+Duplicate Movie Details - Id:MiG7, Title:Crime Doctor's Strangest Case, Year:1943, Director:M.Gordon
+Duplicate Movie Details - Id:CoB1, Title:The Seventh Veil, Year:1945, Director:Bennett
+Duplicate Movie Details - Id:NR1, Title:They Live By Night, Year:1947, Director:N.Ray
+Duplicate Movie Details - Id:Z04120, Title:As Young as You Feel, Year:1951, Director:Unknown4
+Duplicate Movie Details - Id:CMk30, Title:The Koumiko Mystery, Year:1965, Director:Marker
+Duplicate Movie Details - Id:JaS13, Title:The Dark Pool, Year:1963, Director:Smight
+Duplicate Movie Details - Id:KRu25, Title:Rainbow, Year:1989, Director:K.Russell
+Duplicate Movie Details - Id:RWF7, Title:The American Soldier, Year:1970, Director:Fassbinder
+Duplicate Movie Details - Id:WBe1, Title:Heaven Can Wait, Year:1978, Director:Beatty
+Duplicate Movie Details - Id:FOR12, Title:Scream Queen Hot Tub Party, Year:1984, Director:F.O.Ray
+Duplicate Movie Details - Id:PAl4, Title:Matador, Year:1985, Director:Almodovar
+Duplicate Movie Details - Id:BLe5, Title:Tin Men, Year:1987, Director:B.Levinson
+Duplicate Movie Details - Id:KaK10, Title:Another Way, Year:1982, Director:Makk
+Duplicate Movie Details - Id:DdH10, Title:Tendres Cousines, Year:1983, Director:D.Hamilton
+Duplicate Movie Details - Id:LeN10, Title:The Good Mother, Year:1988, Director:Nimoy
+Duplicate Movie Details - Id:BS6, Title:For Love or Money, Year:1993, Director:Sonnenfeld
+Duplicate Movie Details - Id:NtB10, Title:On the Ropes, Year:1999, Director:Brett Morgen
+Duplicate Movie Details - Id:PSv10, Title:Metroland, Year:1999, Director:P.Saville

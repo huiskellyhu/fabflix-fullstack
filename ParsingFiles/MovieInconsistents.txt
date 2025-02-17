@@ -1,0 +1,41 @@
+Inconsistent Movie Details - Id:MSe10, Title:Dough and Dynamite, Year:1914, Director:-1
+Inconsistent Movie Details - Id:MSe15, Title:Fatty and Mabel at the San Diego Exposition, Year:1915, Director:-1
+Inconsistent Movie Details - Id:MSe18, Title:Fatty and Mabel's Simple Life, Year:1915, Director:-1
+Inconsistent Movie Details - Id:LwS150, Title:Crime School, Year:1938, Director:-1
+Inconsistent Movie Details - Id:LB9, Title:El grand cavalcodos, Year:-1, Director:Bunuel
+Inconsistent Movie Details - Id:GC28, Title:Desire Me, Year:1947, Director:-1
+Inconsistent Movie Details - Id:SSS15, Title:A Girl with Ideas, Year:1937, Director:-1
+Inconsistent Movie Details - Id:SSS20, Title:Four Girls in White, Year:1939, Director:-1
+Inconsistent Movie Details - Id:SSS25, Title:Whistling in the Dark, Year:1941, Director:-1
+Inconsistent Movie Details - Id:SSS50, Title:Song of the Open Road, Year:1944, Director:-1
+Inconsistent Movie Details - Id:ChJ60, Title:Secret Agents, Year:1966, Director:-1
+Inconsistent Movie Details - Id:BaD16, Title:I Believe in You, Year:1952, Director:-1
+Inconsistent Movie Details - Id:JD7, Title:-1, Year:1947, Director:Dassin
+Inconsistent Movie Details - Id:WS45, Title:Catherine of Russia, Year:-1, Director:W.Staudte
+Inconsistent Movie Details - Id:WlJ10, Title:-1, Year:1949, Director:W.Jackson
+Inconsistent Movie Details - Id:AS22, Title:Morgan Stewart's Coming Home, Year:-1, Director:Alan~Smithee
+Inconsistent Movie Details - Id:AS32, Title:Raging Angels, Year:-1, Director:Alan~Smithee
+Inconsistent Movie Details - Id:GeP45, Title:-1, Year:1999, Director:Pollock
+Inconsistent Movie Details - Id:GxR10, Title:-1, Year:1954, Director:G.Reinhardt
+Inconsistent Movie Details - Id:GxR10, Title:-1, Year:1954, Director:G.Reinhardt
+Inconsistent Movie Details - Id:LHM1, Title:PT-109, Year:1962, Director:Martinson
+Inconsistent Movie Details - Id:RD1, Title:X-15, Year:1962, Director:R.Donner
+Inconsistent Movie Details - Id:RHd2, Title:Stop Train 349, Year:-1, Director:Haedrich 
+Inconsistent Movie Details - Id:Z6510, Title:The Human Duplicators, Year:1965, Director:-1
+Inconsistent Movie Details - Id:IAv12, Title:Karate Kid, Year:-1, Director:J.G.Avildsen 
+Inconsistent Movie Details - Id:MS0, Title:The Eternal City, Year:-1, Director:Scorsese
+Inconsistent Movie Details - Id:MS36, Title:Gangs of New York, Year:-1, Director:Scorsese 
+Inconsistent Movie Details - Id:WiW30, Title:Buena Vista Social Club, Year:-1, Director:Ullrich Felsberg
+Inconsistent Movie Details - Id:DLy25, Title:Mulholland Drive, Year:-1, Director:D.Lynch
+Inconsistent Movie Details - Id:AEy13, Title:Sarabande, Year:-1, Director:Egoyan
+Inconsistent Movie Details - Id:BSi3, Title:-1, Year:1988, Director:Silberling
+Inconsistent Movie Details - Id:CsS15, Title:Fairy Tale: A True Story, Year:-1, Director:Sturridge
+Inconsistent Movie Details - Id:BeM10, Title:Batman, Mask of The Phantasm, Year:1993, Director:-1
+Inconsistent Movie Details - Id:KDo1x, Title:-1, Year:-1, Director:-1
+Inconsistent Movie Details - Id:TdC13, Title:Jerry and Tom, Year:-1, Director:diCillo
+Inconsistent Movie Details - Id:Z9590, Title:The Shanghai Triad, Year:-1, Director:UnYear95
+Inconsistent Movie Details - Id:AbK15, Title:Taste of Cherry, Year:-1, Director:Kiarostami
+Inconsistent Movie Details - Id:MkJ11, Title:The Matchmaker, Year:-1, Director:M.Joffe
+Inconsistent Movie Details - Id:MJu15, Title:All is Routine, Year:-1, Director:M.Judge
+Inconsistent Movie Details - Id:LDo10, Title:Knockout, Year:2000, Director:-1
+Inconsistent Movie Details - Id:RSc10, Title:Crime + Punsihment in Suburbia, Year:2000, Director:-1
