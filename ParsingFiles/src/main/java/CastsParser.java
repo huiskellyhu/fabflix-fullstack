@@ -164,7 +164,7 @@ public class CastsParser extends DefaultHandler {
                 } else {
                     // Star not found, write to file
                     PrintWriter writer = new PrintWriter(new FileWriter("StarNotFound.txt", true));
-                    writer.println();
+                    writer.println("Not Found " + star.toString());
                     writer.close();
                     stars_notfound++;
                 }
@@ -183,7 +183,7 @@ public class CastsParser extends DefaultHandler {
                 } else {
                     // movie not found, write to file
                     PrintWriter writer = new PrintWriter(new FileWriter("MovieNotFound.txt", true));
-                    writer.println();
+                    writer.println("Not Found " + curr_movie.toString());
                     writer.close();
                     movies_notfound++;
 

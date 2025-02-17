@@ -117,7 +117,11 @@ function getStarsIdandName (starsdata) {
 function handleMovieListResult(resultData) {
     console.log("handleMovieListResult: populating movielist table from resultData");
     console.log("URL params:", window.location.search);
-
+    console.log(resultData[0]);
+    if(resultData[0] === undefined){
+        $("#nextpage").prop("disabled", true);
+        return;
+    }
     // disabling nextBtn depending on total_results
     const total_results = resultData[0]['total_results'] || 0;
     $("#nextpage").prop("disabled", page >= Math.ceil(total_results / limit));
