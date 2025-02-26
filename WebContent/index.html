@@ -50,7 +50,7 @@
         <div class="search-bar">
             <h3 class="mb-2">Search for...</h3>
             <form id="search-form" action="results.html" method="GET">
-                <div class="row justify-content-center align-items-end">
+                <div class="d-flex justify-content-center align-items-center">
                     <div class="col-md-2 col-sm-3">
                         <input type="text" class="form-control" id="title" name="title" placeholder="Title">
                         <label for="title"></label>
@@ -67,7 +67,7 @@
                         <input type="text" class="form-control" id="star" name="star" placeholder="Star">
                         <label for="star"></label>
                     </div>
-                    <div class="col-md-2 col-sm-3">
+                    <div class="col-auto">
                         <button type="submit" class="btn btn-primary mb-4 custom-button">Search</button>
                     </div>
 
@@ -75,7 +75,32 @@
             </form>
         </div>
 
-
+<!--        <div class="search-bar">-->
+<!--            <h3 class="mb-2">Full-Text Search</h3>-->
+<!--            <form id="ft-search-form" action="results.html" method="GET">-->
+<!--                <div class="d-flex justify-content-center align-items-center">-->
+<!--                    <div class="col-md-2 col-sm-3">-->
+<!--                        <input type="text" class="form-control" id="ft-title" name="ft-title" placeholder="Full-Text Search">-->
+<!--                        <label for="ft-title"></label>-->
+<!--                    </div>-->
+<!--                    <div class="col-auto">-->
+<!--                        <button id='ft-search-btn' type="submit" class="btn btn-primary mb-4 custom-button">Search</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+        <div class="search-bar">
+            <h3 class="mb-2">Full-Text Search</h3>
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="col-md-2 col-sm-3">
+                    <input type="text" class="form-control" id="ft-title" name="ft-title" placeholder="Full-Text Search">
+                    <label for="ft-title"></label>
+                </div>
+                <div class="col-auto">
+                    <button id='ft-search-btn' type="submit" class="btn btn-primary mb-4 custom-button">Search</button>
+                </div>
+            </div>
+        </div>
         <!-- BROWSE BY GENRE-->
         <div class="browse-section">
             <h3>Browse by Genres</h3>
@@ -102,6 +127,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
 
     <script src="./index.js"></script>
 </body>

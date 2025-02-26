@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // FOR RETURNING TO RESULTS
     console.log("setting resultspage href");
     let target_params = sessionStorage.getItem("resultsParams");
+    if(target_params == null){
+        return;
+    }
     if (target_params.includes("&returning=1")) {
         document.getElementById("resultspage").href = "results.html?" + target_params;
     } else if (target_params.includes("&returning=0")){

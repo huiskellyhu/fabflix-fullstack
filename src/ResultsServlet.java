@@ -74,7 +74,9 @@ public class ResultsServlet extends HttpServlet {
 //        System.out.println("Received Limit: " + limit);
 //        System.out.println("Received Page: " + page);
 //        System.out.println("Received returning: " + returning);
-        System.out.println("Received genreId: " + genreId);
+        System.out.println("Received title: " + title);
+        System.out.println("Received year: " + year);
+        System.out.println("Received director: " + director);
 
         // setting default values
         if (sort == null){
@@ -83,6 +85,16 @@ public class ResultsServlet extends HttpServlet {
         if (limit == null){
             limit = "25";
         }
+//        if(year == null || year == "" || year.isEmpty() || year.trim().isEmpty()){
+//            System.out.println("early year is null, setting to empty");
+//            year = "";
+//        }
+//        if(director == null){
+//            director = "";
+//        }
+//        if(star == null){
+//            star = "";
+//        }
 
 
         // Output stream to STDOUT
@@ -103,7 +115,7 @@ public class ResultsServlet extends HttpServlet {
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
-
+            System.out.println("getting query");
             // newest query
             // query speed: much faster but inconsistent sometimes for some reason? average is 700ms.
             String query = "SELECT m.id, m.title, m.year, m.director, " +
@@ -266,6 +278,7 @@ public class ResultsServlet extends HttpServlet {
                     statement.setString(paramIndex++, "%" + title + "%");
                 }
                 if (year != null && !year.isEmpty()) {
+                    System.out.println("year: " + year);
                     statement.setInt(paramIndex++, Integer.parseInt(year));
                 }
                 if (director != null && !director.isEmpty()) {
