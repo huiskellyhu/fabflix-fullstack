@@ -55,6 +55,7 @@ public class ResultsServlet extends HttpServlet {
         String limit = request.getParameter("limit");
         String page = request.getParameter("page");
         String returning = request.getParameter("returning");
+        String fulltextsearch = request.getParameter("fts");
 
 
 
@@ -202,7 +203,10 @@ public class ResultsServlet extends HttpServlet {
                 else {
                     query += "AND m.title LIKE ? ";
                 }
-            } else {
+            } else if (fulltextsearch != null){
+                System.out.println("Full text search found");
+                query += "AND MATCH(title) AGAINST(? IN BOOLEAN MODE) ";
+            }else {
 //                query += "WHERE 1=1 "; // to use AND
 
                 if (title != null && !title.isEmpty()) {
@@ -246,7 +250,11 @@ public class ResultsServlet extends HttpServlet {
                 query += "ORDER BY COALESCE(r.rating, 0) DESC, m.title DESC ";
             }
 
-            if(limit == null) {
+            if(fulltextsearch != null){
+                // limit is 10
+                query += "LIMIT 10 ";
+            }
+            else if(limit == null) {
                 query += "LIMIT 25 ";
             } else {
                 query += "LIMIT " + limit + " ";
@@ -272,6 +280,14 @@ public class ResultsServlet extends HttpServlet {
                 if (!prefixId.equals("*")) {
                     statement.setString(1, prefixId + "%");
                 }
+            } else if (fulltextsearch != null){
+                String[] words = title.split(" ");
+                StringBuilder title_words = new StringBuilder();
+                for (String word : words) {
+                    title_words.append("+").append(word).append("* ");
+                }
+                title = title_words.toString().trim();
+                statement.setString(1, title);
             } else {
                 int paramIndex = 1;
                 if (title != null && !title.isEmpty()) {

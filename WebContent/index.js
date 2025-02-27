@@ -78,12 +78,21 @@ $(document).ready(function () {
  */
 function handleLookup(query, doneCallback) {
     console.log("autocomplete initiated")
-    console.log("sending AJAX request to backend Java Servlet")
 
     // TODO: if you want to check past query results first, you can do it here
+    let last_keyword = sessionStorage.getItem("last_keyword");
+    //console.log("keyword:" + last_keyword + ", query:" + query);
+    if(last_keyword == query){
+        // get cached result
+        console.log("using cached result");
+        handleLookupAjaxSuccess(JSON.parse(sessionStorage.getItem("last_suggestions")), query, doneCallback);
+        return;
+    }
 
     // sending the HTTP GET request to the Java Servlet endpoint hero-suggestion
     // with the query data
+
+    console.log("sending AJAX request to backend Java Servlet")
     jQuery.ajax({
         "method": "GET",
         // generate the request url from the query.
@@ -92,6 +101,12 @@ function handleLookup(query, doneCallback) {
         "success": function(data) {
             // pass the data, query, and doneCallback function into the success handler
             handleLookupAjaxSuccess(data, query, doneCallback)
+            // if(sessionStorage.get("current_keyword")){
+            //     sessionStorage.setItem("last_keyword", sessionStorage.getItem("current_keyword"));
+            //     sessionStorage.setItem("last_suggestions", sessionStorage.getItem("current_suggestions"));
+            // }
+            // sessionStorage.setItem("current_keyword", query.toString());
+            // sessionStorage.setItem("current_suggestions", JSON.stringify(data));
         },
         "error": function(errorData) {
             console.log("lookup ajax error")
@@ -109,7 +124,7 @@ function handleLookup(query, doneCallback) {
  *
  */
 function handleLookupAjaxSuccess(data, query, doneCallback) {
-    console.log("lookup ajax successful")
+    //console.log("lookup ajax successful")
     console.log(data);
 
     // parse the string into JSON
@@ -118,6 +133,14 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
     //console.log(jsonData)
 
     // TODO: if you want to cache the result into a global variable you can do it here
+    if(sessionStorage.getItem("current_keyword")){
+        sessionStorage.setItem("last_keyword", sessionStorage.getItem("current_keyword"));
+        sessionStorage.setItem("last_suggestions", sessionStorage.getItem("current_suggestions"));
+    }
+    sessionStorage.setItem("current_keyword", query.toString());
+    sessionStorage.setItem("current_suggestions", JSON.stringify(data));
+    // sessionStorage.setItem("autocomplete_keyword", query.toString());
+    // sessionStorage.setItem("autocomplete_suggestions", JSON.stringify(data));
 
     // call the callback function provided by the autocomplete library
     // add "{suggestions: jsonData}" to satisfy the library response format according to
@@ -164,7 +187,7 @@ function handleNormalSearch(query) {
     console.log("doing normal search with query: " + query);
     // TODO: you should do normal search here
 
-    window.location.href = "results.html?title=" + encodeURIComponent(query) + "&year=&director=&star=";
+    window.location.href = "results.html?title=" + encodeURIComponent(query) + "&year=&director=&star=&fts=1";
     // try with this if doesn't work + "&year=&director=&star=";
 }
 
