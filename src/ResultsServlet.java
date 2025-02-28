@@ -255,11 +255,7 @@ public class ResultsServlet extends HttpServlet {
                 query += "ORDER BY COALESCE(r.rating, 0) DESC, m.title DESC ";
             }
 
-            if(fulltextsearch != null){
-                // limit is 10
-                query += "LIMIT 10 ";
-            }
-            else if(limit == null) {
+            if(limit == null) {
                 query += "LIMIT 25 ";
             } else {
                 query += "LIMIT " + limit + " ";
