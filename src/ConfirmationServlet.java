@@ -33,6 +33,10 @@ public class ConfirmationServlet extends HttpServlet {
         }
     }
 
+    public String getServletInfo() {
+        return "Servlet connects to MySQL database and displays result of a SELECT";
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // get current customer
         HttpSession session = request.getSession();

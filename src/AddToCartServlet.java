@@ -32,6 +32,10 @@ public class AddToCartServlet extends HttpServlet {
         }
     }
 
+    public String getServletInfo() {
+        return "Servlet connects to MySQL database and displays result of a SELECT";
+    }
+
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      * response)

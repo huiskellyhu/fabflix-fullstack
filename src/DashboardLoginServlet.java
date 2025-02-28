@@ -33,6 +33,10 @@ public class DashboardLoginServlet extends HttpServlet {
         }
     }
 
+    public String getServletInfo() {
+        return "Servlet connects to MySQL database and displays result of a SELECT";
+    }
+
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */

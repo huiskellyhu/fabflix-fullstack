@@ -33,6 +33,11 @@ public class AutocompleteServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+    public String getServletInfo() {
+        return "Servlet connects to MySQL database and displays result of a SELECT";
+    }
+
     /*
      *
      * Match the query against superheroes and return a JSON response.
