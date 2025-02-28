@@ -27,6 +27,7 @@ public class AddMovieServlet extends HttpServlet {
     public void init(ServletConfig config) {
         try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/master");
+            System.out.println("connected to db");
         } catch (NamingException e) {
             e.printStackTrace();
         }
