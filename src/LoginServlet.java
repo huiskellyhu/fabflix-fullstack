@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
 
 
         try (Connection conn = dataSource.getConnection()) {
-
+            System.out.println("Checking login info");
             // See if username and password are in database
             String query = "SELECT password, id FROM customers WHERE email = ?";
 
