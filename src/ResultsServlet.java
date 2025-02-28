@@ -82,6 +82,7 @@ public class ResultsServlet extends HttpServlet {
         System.out.println("Received title: " + title);
         System.out.println("Received year: " + year);
         System.out.println("Received director: " + director);
+        System.out.println("Received fulltextsearch: " + fulltextsearch);
 
         // setting default values
         if (sort == null){

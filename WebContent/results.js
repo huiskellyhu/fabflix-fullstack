@@ -196,6 +196,7 @@ let sort = getParameterByName('sort');
 let limit = getParameterByName('limit') || 25;
 let page = getParameterByName('page') || 1;
 let returning = getParameterByName('returning') || 0;
+let fts = getParameterByName('fts');
 
 if (genreId) {
     apiURL = "api/results?genre=" + genreId.trim();
@@ -221,6 +222,9 @@ if (page) {
 }
 if (returning) {
     apiURL += "&returning=" + returning;
+}
+if(fts){
+    apiURL += "&fts=" + fts;
 }
 // Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({
