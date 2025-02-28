@@ -3,7 +3,7 @@
 <Context>
 
     <!-- Defines a Data Source Connecting to localhost moviedbexample-->
-    <Resource name="java:comp/env/jdbc/moviedb"
+    <Resource name="jdbc/moviedb"
               auth="Container"
               driverClassName="com.mysql.cj.jdbc.Driver"
               factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
@@ -12,7 +12,7 @@
               username="mytestuser"
               password="testpassword"
               url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
-    <Resource name="java:comp/env/master"
+    <Resource name="master"
               auth="Container"
               driverClassName="com.mysql.cj.jdbc.Driver"
               factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
