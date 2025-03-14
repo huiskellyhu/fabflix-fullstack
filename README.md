@@ -1,6 +1,54 @@
 # CS122B Project
 ### Author: Kelly Hu
 
+
+## PROJECT 4
+As of 3/2/25: Project 4 requirements completed.
+
+Project 4 Demo Video: https://youtu.be/i-Rz48Qv59Y
+
+Notes: Ports 8080 to the backend servers are closed to public. Demo video ONLY has pauses during AWS image creation and instance initialization. Blank desktop may appear when I'm switching to putty terminals.
+
+- ### Connection Pooling
+    - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+      - [WebContent/META-INF/context.xml](WebContent/META-INF/context.xml)
+      - [src/AddMovieServlet.java](src/AddMovieServlet.java)
+      - [src/AddStarServlet.java](src/AddStarServlet.java)
+      - [src/AddToCartServlet.java](src/AddToCartServlet.java)
+      - [src/ConfirmationServlet.java](src/ConfirmationServlet.java)
+      - [src/DashboardLoginServlet.java](src/DashboardLoginServlet.java)
+      - [src/GenresServlet.java](src/GenresServlet.java)
+      - [src/LoginServlet.java](src/LoginServlet.java)
+      - [src/MetadataServlet.java](src/MetadataServlet.java)
+      - [src/MovieListServlet.java](src/MovieListServlet.java)
+      - [src/PaymentServlet.java](src/PaymentServlet.java)
+      - [src/PlaceOrderServlet.java](src/PlaceOrderServlet.java)
+      - [src/ResultsServlet.java](src/ResultsServlet.java)
+      - [src/ShoppingCartServlet.java](src/ShoppingCartServlet.java)
+      - [src/SingleMovieServlet.java](src/SingleMovieServlet.java)
+      - [src/SingleStarServlet.java](src/SingleStarServlet.java)
+    
+     Note that password encrypting files aren't included (Didn't change them since they're in P3).
+
+    - #### Explain how Connection Pooling is utilized in the Fabflix code.
+      Connection pooling is used to manage database connections more efficiently by reusing a pool of pre-established connections instead of connecting and closing connections for each request. Given that this application uses a lot of queries like for searching, each query would open and close a connection for each request. With connection pooling, when a query is executed, a connection from the pool is used rather than creating a new one. Then, when that connection is "closed," it returns to the pool. This is configured in the context.xml file in the "url" field of each datasource.
+  
+    - #### Explain how Connection Pooling works with two backend SQL.
+      With two backend SQL, connection pooling is consistent with each backend server. In our case, there is a master and a slave database. With a request's connection, it can connect to either the master or the slave, but the database will still remain consistent
+  between the two servers. Queries will get distributed between the two and be more efficient (depending on master/slave, talked about below).
+
+- ### Master/Slave
+    - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
+      - [WebContent/META-INF/context.xml](WebContent/META-INF/context.xml)
+      - [src/AddMovieServlet.java](src/AddMovieServlet.java)
+      - [src/AddStarServlet.java](src/AddStarServlet.java)
+      - [src/AddToCartServlet.java](src/AddToCartServlet.java)
+      - [src/PlaceOrderServlet.java](src/PlaceOrderServlet.java)
+     
+        Note that password encrypting files aren't included (Didn't change them since they're in P3).
+    - #### How read/write requests were routed to Master/Slave SQL?
+      Read/write requests were routed to Master/Slave SQL by setting the datasource for servlets to master if they had to update the database in any way. These servlets are noted above. Reading from the database was allowed for either the master or slave, but writing was only for master.
+
 ## PROJECT 3
 As of 2/16/25: Project 3 requirements completed.
 
