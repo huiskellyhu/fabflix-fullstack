@@ -89,12 +89,13 @@ public class LoginServlet extends HttpServlet {
             // Perform the query
             ResultSet rs = statement.executeQuery();
 
+            System.out.println("checkpoint 1");
             JsonObject responseJsonObject = new JsonObject();
 
             // Iterate through each row of rs
             if (rs.next()) {
                 // Login success (username found):
-
+                System.out.println("checkpoint 2");
                 // set this user into the session (for other functionalities)
                 request.getSession().setAttribute("user", new User(rs.getString("id"), username));
 
