@@ -5,6 +5,9 @@ import com.google.gson.JsonObject;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import common.JwtUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -50,8 +53,11 @@ public class ShoppingCartServlet extends HttpServlet {
         // 2. match user's id (customer id) to rows in cart_items table
         // 3. info to display: title, quantity, price, total price
         HttpSession session = request.getSession();
-        User current_user = (User) session.getAttribute("user");
-        Integer customer_id = current_user.getId();
+//        User current_user = (User) session.getAttribute("user");
+//        Integer customer_id = current_user.getId();
+        String token = JwtUtil.getCookieValue(request, "jwtToken");
+        Claims claims = JwtUtil.validateToken(token);
+        Integer customer_id = Integer.valueOf(claims.getSubject());
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();

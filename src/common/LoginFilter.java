@@ -40,7 +40,6 @@ public class LoginFilter implements Filter {
             return;
         }
 
-
         String token = JwtUtil.getCookieValue(httpRequest, "jwtToken");
         Claims claims = JwtUtil.validateToken(token);
 

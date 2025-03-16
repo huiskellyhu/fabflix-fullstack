@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import common.User;
+import common.JwtUtil;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -44,9 +47,13 @@ public class AddToCartServlet extends HttpServlet {
      * response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        User current_user = (User) session.getAttribute("user");
-        Integer customer_id = current_user.getId();
+//        HttpSession session = request.getSession();
+//        User current_user = (User) session.getAttribute("user");
+//        Integer customer_id = current_user.getId();
+
+        String token = JwtUtil.getCookieValue(request, "jwtToken");
+        Claims claims = JwtUtil.validateToken(token);
+        Integer customer_id = Integer.valueOf(claims.getSubject());
 
         String movie_id = request.getParameter("movie_id");
         String movie_quantity = request.getParameter("movie_quantity");
