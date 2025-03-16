@@ -121,9 +121,13 @@ public class AddToCartServlet extends HttpServlet {
     }
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // for deleting an entry in cart_items (make sure to update total price too)
-        HttpSession session = request.getSession();
-        User current_user = (User) session.getAttribute("user");
-        int customer_id = current_user.getId();
+//        HttpSession session = request.getSession();
+//        User current_user = (User) session.getAttribute("user");
+//        int customer_id = current_user.getId();
+
+        String token = JwtUtil.getCookieValue(request, "jwtToken");
+        Claims claims = JwtUtil.validateToken(token);
+        Integer customer_id = Integer.valueOf(claims.get("currid", String.class));
 
         String movie_id = request.getParameter("movie_id");
 
