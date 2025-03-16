@@ -1,3 +1,5 @@
+package movies;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -17,7 +19,7 @@ import java.sql.Statement;
 
 
 
-@WebServlet(name = "MovieListServlet", urlPatterns = "/api/movielist")
+@WebServlet(name = "movies.MovieListServlet", urlPatterns = "/api/movielist")
 public class MovieListServlet extends HttpServlet {
     // Create a dataSource which registered in web.xml
     private static final long serialVersionUID = 1L;

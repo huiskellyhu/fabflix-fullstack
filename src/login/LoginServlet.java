@@ -1,5 +1,7 @@
-import com.google.gson.JsonArray;
+package login;
+
 import com.google.gson.JsonObject;
+import common.JwtUtil;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,10 +17,14 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-@WebServlet(name = "DashboardLoginServlet", urlPatterns = "/_dashboard/api/dashboardlogin")
-public class DashboardLoginServlet extends HttpServlet {
+@WebServlet(name = "login.LoginServlet", urlPatterns = "/api/login")
+public class LoginServlet extends HttpServlet {
     // Create a dataSource which registered in web.xml
     private static final long serialVersionUID = 1L;
 
@@ -69,9 +75,9 @@ public class DashboardLoginServlet extends HttpServlet {
 
 
         try (Connection conn = dataSource.getConnection()) {
-
+            System.out.println("Checking login info");
             // See if username and password are in database
-            String query = "SELECT password FROM employees WHERE email = ?";
+            String query = "SELECT password, id FROM customers WHERE email = ?";
 
             PreparedStatement statement = conn.prepareStatement(query);
 
@@ -88,11 +94,8 @@ public class DashboardLoginServlet extends HttpServlet {
             if (rs.next()) {
                 // Login success (username found):
 
-                // set this user into the session
-//                request.getSession().setAttribute("user", new User(rs.getString("email"), username));
-                // logic: keep the current user in session, add a new employee one too
-                request.getSession().setAttribute("employee", username);
-
+                // set this user into the session (for other functionalities)
+                request.getSession().setAttribute("user", new User(rs.getString("id"), username));
 
                 // decrypt password
                 String encrypted_password = rs.getString("password");
@@ -101,6 +104,20 @@ public class DashboardLoginServlet extends HttpServlet {
                 success = new StrongPasswordEncryptor().checkPassword(password, encrypted_password);
 
                 if (success) {
+                    // use username as the subject of JWT
+                    String subject = username;
+
+                    // store user login time in JWT
+                    Map<String, Object> claims = new HashMap<>();
+
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    claims.put("loginTime", dateFormat.format(new Date()));
+
+                    // Generate new JWT and add it to Header
+                    String token = JwtUtil.generateToken(subject, claims);
+                    JwtUtil.updateJwtCookie(request, response, token);
+
+
                     responseJsonObject.addProperty("status", "success");
                     responseJsonObject.addProperty("message", "success");
                 } else {

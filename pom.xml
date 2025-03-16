@@ -27,12 +27,30 @@
             <artifactId>jasypt</artifactId>
             <version>1.9.3</version>
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>cs122b-winter25-cows</finalName>
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>${endpointDir}</sourceDirectory>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
@@ -46,8 +64,51 @@
                 <version>3.4.0</version>
                 <configuration>
                     <warSourceDirectory>WebContent</warSourceDirectory>
+                    <warSourceExcludes>${excludes}</warSourceExcludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/common</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>login</id>
+            <properties>
+                <endpointDir>src/login</endpointDir>
+                <excludes>**/index.html, **/index.js</excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>movies</id>
+            <properties>
+                <endpointDir>src/movies</endpointDir>
+                <excludes>**/login.html, **/login.js</excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>default</id>
+            <properties>
+                <endpointDir>src</endpointDir>
+                <excludes/>
+            </properties>
+        </profile>
+    </profiles>
 </project>

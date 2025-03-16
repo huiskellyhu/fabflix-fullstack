@@ -1,9 +1,10 @@
+package movies;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -18,7 +19,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-@WebServlet(name = "AutocompleteServlet", urlPatterns = "/api/autocomplete")
+@WebServlet(name = "movies.AutocompleteServlet", urlPatterns = "/api/autocomplete")
 public class AutocompleteServlet extends HttpServlet {
     // Create a dataSource which registered in web.xml
     private static final long serialVersionUID = 1L;

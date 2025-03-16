@@ -1,14 +1,17 @@
+package movies;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import login.User;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,10 +19,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-// Declaring a WebServlet called SingleStarServlet, which maps to url "/api/single-star"
-@WebServlet(name = "ShoppingCartServlet", urlPatterns = "/api/shoppingcart")
-public class ShoppingCartServlet extends HttpServlet {
-    private static final long serialVersionUID = 2L;
+@WebServlet(name = "movies.ConfirmationServlet", urlPatterns = "/api/confirmation")
+public class ConfirmationServlet extends HttpServlet {
+    // Create a dataSource which registered in web.xml
+    private static final long serialVersionUID = 1L;
 
     // Create a dataSource which registered in web.xml
     private DataSource dataSource;
@@ -36,48 +39,51 @@ public class ShoppingCartServlet extends HttpServlet {
         return "Servlet connects to MySQL database and displays result of a SELECT";
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     * response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // TODO: display contents of the current user's shopping cart
-        // 1. get current user's id
-        // 2. match user's id (customer id) to rows in cart_items table
-        // 3. info to display: title, quantity, price, total price
+        // get current customer
         HttpSession session = request.getSession();
         User current_user = (User) session.getAttribute("user");
         Integer customer_id = current_user.getId();
 
+        response.setContentType("application/json");
+
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
+        // only get current customer's most recent n sales (session.getAttribute("recent_sales_num")
+        int num_recent = (Integer) session.getAttribute("recent_sales_num");
+
         try (Connection conn = dataSource.getConnection()) {
-            // check if user + movie is already in the cart_items table
-            String query = "SELECT ci.movie_id, m.title, m.price, ci.quantity " +
-                            "FROM cart_items AS ci " +
-                            "INNER JOIN movies AS m ON ci.movie_id = m.id " +
-                            "WHERE ci.customer_id = ?";
+            String query = "SELECT s.id, s.movieId, m.title, m.price, s.quantity " +
+                    "FROM sales AS s " +
+                    "JOIN movies AS m ON s.movieId = m.id " +
+                    "WHERE customerId = ? " +
+                    "ORDER BY s.id DESC LIMIT ?";
 
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setInt(1, customer_id);
+            statement.setInt(2, num_recent);
+
+            // Perform the query
             ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
             while (rs.next()) {
-                String movie_id = rs.getString("movie_id");
+                String sales_id = rs.getString("id");
+                String movie_id = rs.getString("movieId");
                 String movie_title = rs.getString("title");
+                String sales_quantity = rs.getString("quantity");
                 String movie_price = rs.getString("price");
-                String movie_quantity = rs.getString("quantity");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("sales_id", sales_id);
                 jsonObject.addProperty("movie_id", movie_id);
                 jsonObject.addProperty("movie_title", movie_title);
+                jsonObject.addProperty("sales_quantity", sales_quantity);
                 jsonObject.addProperty("movie_price", movie_price);
-                jsonObject.addProperty("movie_quantity", movie_quantity);
 
                 jsonArray.add(jsonObject);
             }
@@ -90,7 +96,6 @@ public class ShoppingCartServlet extends HttpServlet {
             out.write(jsonArray.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
-
         } catch (Exception e) {
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
@@ -106,6 +111,5 @@ public class ShoppingCartServlet extends HttpServlet {
         }
 
     }
-
 
 }

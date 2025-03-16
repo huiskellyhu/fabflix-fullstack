@@ -1,10 +1,12 @@
-import com.google.gson.JsonArray;
+package movies;
+
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import login.RecaptchaVerifyUtils;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import javax.naming.InitialContext;
@@ -15,10 +17,9 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "movies.DashboardLoginServlet", urlPatterns = "/_dashboard/api/dashboardlogin")
+public class DashboardLoginServlet extends HttpServlet {
     // Create a dataSource which registered in web.xml
     private static final long serialVersionUID = 1L;
 
@@ -69,9 +70,9 @@ public class LoginServlet extends HttpServlet {
 
 
         try (Connection conn = dataSource.getConnection()) {
-            System.out.println("Checking login info");
+
             // See if username and password are in database
-            String query = "SELECT password, id FROM customers WHERE email = ?";
+            String query = "SELECT password FROM employees WHERE email = ?";
 
             PreparedStatement statement = conn.prepareStatement(query);
 
@@ -89,7 +90,10 @@ public class LoginServlet extends HttpServlet {
                 // Login success (username found):
 
                 // set this user into the session
-                request.getSession().setAttribute("user", new User(rs.getString("id"), username));
+//                request.getSession().setAttribute("user", new login.User(rs.getString("email"), username));
+                // logic: keep the current user in session, add a new employee one too
+                request.getSession().setAttribute("employee", username);
+
 
                 // decrypt password
                 String encrypted_password = rs.getString("password");

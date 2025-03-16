@@ -12,21 +12,21 @@ Notes: Ports 8080 to the backend servers are closed to public. Demo video ONLY h
 - ### Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
       - [WebContent/META-INF/context.xml](WebContent/META-INF/context.xml)
-      - [src/AddMovieServlet.java](src/AddMovieServlet.java)
-      - [src/AddStarServlet.java](src/AddStarServlet.java)
-      - [src/AddToCartServlet.java](src/AddToCartServlet.java)
-      - [src/ConfirmationServlet.java](src/ConfirmationServlet.java)
-      - [src/DashboardLoginServlet.java](src/DashboardLoginServlet.java)
-      - [src/GenresServlet.java](src/GenresServlet.java)
-      - [src/LoginServlet.java](src/LoginServlet.java)
-      - [src/MetadataServlet.java](src/MetadataServlet.java)
-      - [src/MovieListServlet.java](src/MovieListServlet.java)
-      - [src/PaymentServlet.java](src/PaymentServlet.java)
-      - [src/PlaceOrderServlet.java](src/PlaceOrderServlet.java)
-      - [src/ResultsServlet.java](src/ResultsServlet.java)
-      - [src/ShoppingCartServlet.java](src/ShoppingCartServlet.java)
-      - [src/SingleMovieServlet.java](src/SingleMovieServlet.java)
-      - [src/SingleStarServlet.java](src/SingleStarServlet.java)
+      - [src/movies.AddMovieServlet.java](src/AddMovieServlet.java)
+      - [src/movies.AddStarServlet.java](src/AddStarServlet.java)
+      - [src/movies.AddToCartServlet.java](src/AddToCartServlet.java)
+      - [src/movies.ConfirmationServlet.java](src/ConfirmationServlet.java)
+      - [src/movies.DashboardLoginServlet.java](src/DashboardLoginServlet.java)
+      - [src/movies.GenresServlet.java](src/GenresServlet.java)
+      - [src/login.LoginServlet.java](src/LoginServlet.java)
+      - [src/movies.MetadataServlet.java](src/MetadataServlet.java)
+      - [src/movies.MovieListServlet.java](src/MovieListServlet.java)
+      - [src/movies.PaymentServlet.java](src/PaymentServlet.java)
+      - [src/movies.PlaceOrderServlet.java](src/PlaceOrderServlet.java)
+      - [src/movies.ResultsServlet.java](src/ResultsServlet.java)
+      - [src/movies.ShoppingCartServlet.java](src/ShoppingCartServlet.java)
+      - [src/movies.SingleMovieServlet.java](src/SingleMovieServlet.java)
+      - [src/movies.SingleStarServlet.java](src/SingleStarServlet.java)
     
      Note that password encrypting files aren't included (Didn't change them since they're in P3).
 
@@ -40,10 +40,10 @@ Notes: Ports 8080 to the backend servers are closed to public. Demo video ONLY h
 - ### Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
       - [WebContent/META-INF/context.xml](WebContent/META-INF/context.xml)
-      - [src/AddMovieServlet.java](src/AddMovieServlet.java)
-      - [src/AddStarServlet.java](src/AddStarServlet.java)
-      - [src/AddToCartServlet.java](src/AddToCartServlet.java)
-      - [src/PlaceOrderServlet.java](src/PlaceOrderServlet.java)
+      - [src/movies.AddMovieServlet.java](src/AddMovieServlet.java)
+      - [src/movies.AddStarServlet.java](src/AddStarServlet.java)
+      - [src/movies.AddToCartServlet.java](src/AddToCartServlet.java)
+      - [src/movies.PlaceOrderServlet.java](src/PlaceOrderServlet.java)
      
         Note that password encrypting files aren't included (Didn't change them since they're in P3).
     - #### How read/write requests were routed to Master/Slave SQL?
@@ -57,23 +57,23 @@ Project 3 Demo Video: https://www.youtube.com/watch?v=70OwEigokEg
 Notes: stored-procedure.sql is in folder 'db'. Only 2 commits after the demo video (readme update and inconsistent data reports).
 
 ### Files with Prepared Statements:
-- AddStarServlet
-- AddToCartServlet
-- ConfirmationServlet
-- DashboardLoginServlet
-- LoginServlet
-- PaymentServlet
-- PlaceOrderServlet
-- ResultsServlet
-- ShoppingCartServlet
-- SingleMovieServlet
-- SingleStarServlet
+- movies.AddStarServlet
+- movies.AddToCartServlet
+- movies.ConfirmationServlet
+- movies.DashboardLoginServlet
+- login.LoginServlet
+- movies.PaymentServlet
+- movies.PlaceOrderServlet
+- movies.ResultsServlet
+- movies.ShoppingCartServlet
+- movies.SingleMovieServlet
+- movies.SingleStarServlet
 
 Note:
-- AddMovieServlet uses CallableStatement.
-- VerifyEmployeePassword and VerifyPassword doesn't use user input so Statement suffices.
-- GenresServlet doesn't use user input so Statement suffices.
-- MovieListServlet doesn't use user input so Statement suffices.
+- movies.AddMovieServlet uses CallableStatement.
+- movies.VerifyEmployeePassword and movies.VerifyPassword doesn't use user input so Statement suffices.
+- movies.GenresServlet doesn't use user input so Statement suffices.
+- movies.MovieListServlet doesn't use user input so Statement suffices.
 
 
 ### Parsing Time Optimization Strategies
@@ -102,7 +102,7 @@ As of 2/2/25: Project 2 requirements completed.
 
 Project 2 Demo Video: https://www.youtube.com/watch?v=3-Bw_5iemmo
 
-Substring matching design: All patterns used WHERE ... LIKE '%something%'. These patterns were just used for the SQL query for search bar's title, director, and star in the ResultsServlet.java.
+Substring matching design: All patterns used WHERE ... LIKE '%something%'. These patterns were just used for the SQL query for search bar's title, director, and star in the movies.ResultsServlet.java.
 
 ## PROJECT 1
 As of 1/19/25: Project 1 requirements completed.

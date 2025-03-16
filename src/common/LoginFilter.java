@@ -1,3 +1,7 @@
+package common;
+
+import io.jsonwebtoken.Claims;
+
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,8 +12,8 @@ import java.util.ArrayList;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter(filterName = "DashboardLoginFilter", urlPatterns = "/_dashboard/*")
-public class DashboardLoginFilter implements Filter {
+@WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
+public class LoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
 
     /**
@@ -20,21 +24,39 @@ public class DashboardLoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        System.out.println("LoginFilter: " + httpRequest.getRequestURI());
+        String uri = httpRequest.getRequestURI();
+        if (uri.contains("/_dashboard")) {
+            // skip this filter if employee login
+            chain.doFilter(request, response);
+            return;
+        }
+
+        System.out.println("LoginFilter: " + uri);
 
         // Check if this URL is allowed to access without logging in
-        if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
+        if (this.isUrlAllowedWithoutLogin(uri)) {
             // Keep default action: pass along the filter chain
             chain.doFilter(request, response);
             return;
         }
 
-        // Redirect to login page if the "user" attribute doesn't exist in session
-        if (httpRequest.getSession().getAttribute("employee") == null) {
-            httpResponse.sendRedirect(httpRequest.getContextPath()+"/_dashboard/login.html");
+
+        String token = JwtUtil.getCookieValue(httpRequest, "jwtToken");
+        Claims claims = JwtUtil.validateToken(token);
+
+        if (claims != null){
+            httpRequest.setAttribute("claims", claims);
+
+            chain.doFilter(request,response);
         } else {
-            chain.doFilter(request, response);
+            httpResponse.sendRedirect(httpRequest.getContextPath()+"/login.html");
         }
+        // Redirect to login page if the "user" attribute doesn't exist in session
+//        if (httpRequest.getSession().getAttribute("user") == null) {
+//            httpResponse.sendRedirect(httpRequest.getContextPath()+"/login.html");
+//        } else {
+//            chain.doFilter(request, response);
+//        }
     }
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
@@ -49,8 +71,8 @@ public class DashboardLoginFilter implements Filter {
     public void init(FilterConfig fConfig) {
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
+        allowedURIs.add("api/login");
         allowedURIs.add("api/dashboardlogin");
-        allowedURIs.add("api/metadata");
         allowedURIs.add("styles.css");
     }
 

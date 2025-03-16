@@ -1,5 +1,8 @@
+package login;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,11 +21,11 @@ public class RecaptchaVerifyUtils {
 
         // Add Request Header
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+        conn.setRequestProperty("login.User-Agent", "Mozilla/5.0");
         conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
         // Data will be sent to the server.
-        String postParams = "secret=" + RecaptchaConstants.SECRET_KEY + "&response=" + gRecaptchaResponse;
+        String postParams = "secret=" + login.RecaptchaConstants.SECRET_KEY + "&response=" + gRecaptchaResponse;
 
         // Send Request
         conn.setDoOutput(true);

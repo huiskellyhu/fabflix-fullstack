@@ -1,3 +1,5 @@
+package movies;
+
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,8 +10,8 @@ import java.util.ArrayList;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
-public class LoginFilter implements Filter {
+@WebFilter(filterName = "movies.DashboardLoginFilter", urlPatterns = "/_dashboard/*")
+public class DashboardLoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
 
     /**
@@ -20,25 +22,18 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        String uri = httpRequest.getRequestURI();
-        if (uri.contains("/_dashboard")) {
-            // skip this filter if employee login
-            chain.doFilter(request, response);
-            return;
-        }
-
-        System.out.println("LoginFilter: " + uri);
+        System.out.println("LoginFilter: " + httpRequest.getRequestURI());
 
         // Check if this URL is allowed to access without logging in
-        if (this.isUrlAllowedWithoutLogin(uri)) {
+        if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
             // Keep default action: pass along the filter chain
             chain.doFilter(request, response);
             return;
         }
 
         // Redirect to login page if the "user" attribute doesn't exist in session
-        if (httpRequest.getSession().getAttribute("user") == null) {
-            httpResponse.sendRedirect(httpRequest.getContextPath()+"/login.html");
+        if (httpRequest.getSession().getAttribute("employee") == null) {
+            httpResponse.sendRedirect(httpRequest.getContextPath()+"/_dashboard/login.html");
         } else {
             chain.doFilter(request, response);
         }
@@ -56,8 +51,8 @@ public class LoginFilter implements Filter {
     public void init(FilterConfig fConfig) {
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
-        allowedURIs.add("api/login");
         allowedURIs.add("api/dashboardlogin");
+        allowedURIs.add("api/metadata");
         allowedURIs.add("styles.css");
     }
 

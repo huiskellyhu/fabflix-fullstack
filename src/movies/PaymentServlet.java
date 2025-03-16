@@ -1,4 +1,5 @@
-import com.google.gson.JsonArray;
+package movies;
+
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -6,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import login.User;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -15,9 +17,8 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
-@WebServlet(name = "PaymentServlet", urlPatterns = "/api/payment")
+@WebServlet(name = "movies.PaymentServlet", urlPatterns = "/api/payment")
 public class PaymentServlet extends HttpServlet {
     // Create a dataSource which registered in web.xml
     private static final long serialVersionUID = 1L;

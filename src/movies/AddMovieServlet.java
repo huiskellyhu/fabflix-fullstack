@@ -1,4 +1,5 @@
-import com.google.gson.JsonArray;
+package movies;
+
 import com.google.gson.JsonObject;
 
 import javax.naming.InitialContext;
@@ -8,16 +9,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-@WebServlet(name = "AddMovieServlet", urlPatterns = "/_dashboard/api/addmovie")
+@WebServlet(name = "movies.AddMovieServlet", urlPatterns = "/_dashboard/api/addmovie")
 public class AddMovieServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 

@@ -1,3 +1,5 @@
+package movies;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -14,12 +16,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 
-@WebServlet(name = "MetadataServlet", urlPatterns = "/_dashboard/api/dashboardmetadata")
+@WebServlet(name = "movies.MetadataServlet", urlPatterns = "/_dashboard/api/dashboardmetadata")
 public class MetadataServlet extends HttpServlet {
     // Create a dataSource which registered in web.xml
     private static final long serialVersionUID = 2L;
@@ -31,7 +32,7 @@ public class MetadataServlet extends HttpServlet {
         System.out.println("trying to initialize metadataservlet");
         try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
-            System.out.println("MetadataServlet initialized!");
+            System.out.println("movies.MetadataServlet initialized!");
         } catch (NamingException e) {
             e.printStackTrace();
         }

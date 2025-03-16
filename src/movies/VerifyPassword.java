@@ -1,3 +1,5 @@
+package movies;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -5,7 +7,7 @@ import java.sql.Statement;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
-public class VerifyEmployeePassword {
+public class VerifyPassword {
 
     /*
      * After you update the passwords in customers table,
@@ -19,8 +21,8 @@ public class VerifyEmployeePassword {
      */
     public static void main(String[] args) throws Exception {
 
-        System.out.println(verifyCredentials("classta@email.edu", "classta"));
-        System.out.println(verifyCredentials("classta@email.edu", "a3"));
+        System.out.println(verifyCredentials("a@email.com", "a2"));
+        System.out.println(verifyCredentials("a@email.com", "a3"));
 
     }
 
@@ -34,7 +36,7 @@ public class VerifyEmployeePassword {
         Connection connection = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
         Statement statement = connection.createStatement();
 
-        String query = String.format("SELECT * from employees where email='%s'", email);
+        String query = String.format("SELECT * from customers where email='%s'", email);
 
         ResultSet rs = statement.executeQuery(query);
 
