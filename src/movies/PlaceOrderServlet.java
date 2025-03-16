@@ -48,8 +48,9 @@ public class PlaceOrderServlet extends HttpServlet {
         HttpSession session = request.getSession();
 //        User current_user = (User) session.getAttribute("user");
 //        Integer customer_id = current_user.getId();
-        String token = JwtUtil.getCookieValue(request, "jwtToken");
-        Claims claims = JwtUtil.validateToken(token);
+
+        //String token = JwtUtil.getCookieValue(request, "jwtToken");
+        Claims claims = (Claims) session.getAttribute("claims");
         Integer customer_id = Integer.valueOf(claims.get("currid", String.class));
 
         // Output stream to STDOUT

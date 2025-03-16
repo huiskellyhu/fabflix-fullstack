@@ -73,11 +73,12 @@ public class PaymentServlet extends HttpServlet {
                 // credit card num found
 
                 // make sure that session's customer id matches the credit card id of the current customer id
-//                HttpSession session = request.getSession();
-//                User current_user = (User) session.getAttribute("user");
-//                Integer customer_id = current_user.getId();
-                String token = JwtUtil.getCookieValue(request, "jwtToken");
-                Claims claims = JwtUtil.validateToken(token);
+                HttpSession session = request.getSession();
+//        User current_user = (User) session.getAttribute("user");
+//        Integer customer_id = current_user.getId();
+
+                //String token = JwtUtil.getCookieValue(request, "jwtToken");
+                Claims claims = (Claims) session.getAttribute("claims");
                 Integer customer_id = Integer.valueOf(claims.get("currid", String.class));
 
                 String correct_card_query = "SELECT ccId FROM customers WHERE id = ?";
