@@ -54,6 +54,12 @@ public class AddToCartServlet extends HttpServlet {
         String token = JwtUtil.getCookieValue(request, "jwtToken");
         //Claims claims = (Claims) session.getAttribute("claims");
         Claims claims = JwtUtil.validateToken(token);
+
+        if (claims == null){
+            System.out.println("Claims is null..");
+        } else {
+            System.out.println("claims.get currid = " + claims.get("currid", String.class));
+        }
         Integer customer_id = Integer.valueOf(claims.get("currid", String.class));
 
         String movie_id = request.getParameter("movie_id");
