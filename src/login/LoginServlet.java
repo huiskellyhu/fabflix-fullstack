@@ -2,6 +2,7 @@ package login;
 
 import com.google.gson.JsonObject;
 import common.JwtUtil;
+import common.User;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -56,7 +57,7 @@ public class LoginServlet extends HttpServlet {
 
         // Verify reCAPTCHA
         try {
-            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+            login.RecaptchaVerifyUtils.verify(gRecaptchaResponse);
             System.out.println("gRecaptchaResponse=successful");
         } catch (Exception e) {
             System.out.println("gRecaptchaResponse=failed");

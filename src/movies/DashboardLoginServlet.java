@@ -90,7 +90,7 @@ public class DashboardLoginServlet extends HttpServlet {
                 // Login success (username found):
 
                 // set this user into the session
-//                request.getSession().setAttribute("user", new login.User(rs.getString("email"), username));
+//                request.getSession().setAttribute("user", new common.User(rs.getString("email"), username));
                 // logic: keep the current user in session, add a new employee one too
                 request.getSession().setAttribute("employee", username);
 
