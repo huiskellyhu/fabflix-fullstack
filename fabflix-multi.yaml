@@ -55,6 +55,7 @@ spec:
       containers:
         - name: fabflix-login-container
           image: kellyh12/cs122b-p5-login:v1
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 8080
