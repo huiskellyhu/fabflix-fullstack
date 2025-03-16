@@ -16,7 +16,7 @@ Notes: Ports 8080 to the backend servers are closed to public. Demo video ONLY h
       - [src/movies.AddStarServlet.java](src/AddStarServlet.java)
       - [src/movies.AddToCartServlet.java](src/AddToCartServlet.java)
       - [src/movies.ConfirmationServlet.java](src/ConfirmationServlet.java)
-      - [src/movies.DashboardLoginServlet.java](src/DashboardLoginServlet.java)
+      - [src/login.DashboardLoginServlet.java](src/DashboardLoginServlet.java)
       - [src/movies.GenresServlet.java](src/GenresServlet.java)
       - [src/login.LoginServlet.java](src/LoginServlet.java)
       - [src/movies.MetadataServlet.java](src/MetadataServlet.java)
@@ -60,7 +60,7 @@ Notes: stored-procedure.sql is in folder 'db'. Only 2 commits after the demo vid
 - movies.AddStarServlet
 - movies.AddToCartServlet
 - movies.ConfirmationServlet
-- movies.DashboardLoginServlet
+- login.DashboardLoginServlet
 - login.LoginServlet
 - movies.PaymentServlet
 - movies.PlaceOrderServlet

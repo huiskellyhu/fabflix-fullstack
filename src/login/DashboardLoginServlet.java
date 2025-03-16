@@ -1,4 +1,4 @@
-package movies;
+package login;
 
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import login.RecaptchaVerifyUtils;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import javax.naming.InitialContext;
@@ -18,7 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-@WebServlet(name = "movies.DashboardLoginServlet", urlPatterns = "/_dashboard/api/dashboardlogin")
+@WebServlet(name = "login.DashboardLoginServlet", urlPatterns = "/_dashboard/api/dashboardlogin")
 public class DashboardLoginServlet extends HttpServlet {
     // Create a dataSource which registered in web.xml
     private static final long serialVersionUID = 1L;

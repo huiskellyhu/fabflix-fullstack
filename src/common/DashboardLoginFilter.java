@@ -1,4 +1,4 @@
-package movies;
+package common;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter(filterName = "movies.DashboardLoginFilter", urlPatterns = "/_dashboard/*")
+@WebFilter(filterName = "common.DashboardLoginFilter", urlPatterns = "/_dashboard/*")
 public class DashboardLoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
 
