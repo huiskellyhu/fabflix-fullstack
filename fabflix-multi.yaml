@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: fabflix-movies-container
-          image: kellyh12/cs122b-p5:v4 # v2 is murphy, v3 is login, v4 is movie
+          image: kellyh12/cs122b-p5-movies:v1
           imagePullPolicy: Always
           ports:
             - name: http
@@ -54,8 +54,7 @@ spec:
     spec:
       containers:
         - name: fabflix-login-container
-          image: kellyh12/cs122b-p5:v3 # v2 is murphy, v3 is login, v4 is movie
-          imagePullPolicy: Always
+          image: kellyh12/cs122b-p5-login:v1
           ports:
             - name: http
               containerPort: 8080
