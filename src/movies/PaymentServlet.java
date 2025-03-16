@@ -77,8 +77,9 @@ public class PaymentServlet extends HttpServlet {
 //        User current_user = (User) session.getAttribute("user");
 //        Integer customer_id = current_user.getId();
 
-                //String token = JwtUtil.getCookieValue(request, "jwtToken");
-                Claims claims = (Claims) session.getAttribute("claims");
+                String token = JwtUtil.getCookieValue(request, "jwtToken");
+                //Claims claims = (Claims) session.getAttribute("claims");
+                Claims claims = JwtUtil.validateToken(token);
                 Integer customer_id = Integer.valueOf(claims.get("currid", String.class));
 
                 String correct_card_query = "SELECT ccId FROM customers WHERE id = ?";

@@ -48,7 +48,9 @@ public class ConfirmationServlet extends HttpServlet {
 //        Integer customer_id = current_user.getId();
 
         //String token = JwtUtil.getCookieValue(request, "jwtToken");
-        Claims claims = (Claims) session.getAttribute("claims");
+        String token = JwtUtil.getCookieValue(request, "jwtToken");
+        //Claims claims = (Claims) session.getAttribute("claims");
+        Claims claims = JwtUtil.validateToken(token);
         Integer customer_id = Integer.valueOf(claims.get("currid", String.class));
 
         response.setContentType("application/json");
