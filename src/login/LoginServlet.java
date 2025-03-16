@@ -113,6 +113,7 @@ public class LoginServlet extends HttpServlet {
 
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     claims.put("loginTime", dateFormat.format(new Date()));
+                    claims.put("currid", rs.getString("id"));
 
                     // Generate new JWT and add it to Header
                     String token = JwtUtil.generateToken(subject, claims);

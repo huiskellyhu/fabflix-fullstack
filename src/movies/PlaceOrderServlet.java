@@ -50,7 +50,7 @@ public class PlaceOrderServlet extends HttpServlet {
 //        Integer customer_id = current_user.getId();
         String token = JwtUtil.getCookieValue(request, "jwtToken");
         Claims claims = JwtUtil.validateToken(token);
-        Integer customer_id = Integer.valueOf(claims.getSubject());
+        Integer customer_id = Integer.valueOf(claims.get("id", String.class));
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();

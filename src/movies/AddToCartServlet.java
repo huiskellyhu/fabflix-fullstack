@@ -53,7 +53,7 @@ public class AddToCartServlet extends HttpServlet {
 
         String token = JwtUtil.getCookieValue(request, "jwtToken");
         Claims claims = JwtUtil.validateToken(token);
-        Integer customer_id = Integer.valueOf(claims.getSubject());
+        Integer customer_id = Integer.valueOf(claims.get("id", String.class));
 
         String movie_id = request.getParameter("movie_id");
         String movie_quantity = request.getParameter("movie_quantity");
