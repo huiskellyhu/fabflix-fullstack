@@ -18,5 +18,5 @@ spec:
                 name: fabflix-service # Points to the service named "fabflix-service". The value should match the name of the service.
                 port:
                   number: 8080 # Specifies that the service is listening on port 8080.
-            path: /cs122b-winter25-cows/ # # Defines the path to match incoming requests. Here, "/" means the root path.
+            path: / # # Defines the path to match incoming requests. Here, "/" means the root path.
             pathType: Prefix # # Indicates that the path is a prefix match, so any request path starting with "/" will be routed to the backend service.
